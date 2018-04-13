@@ -1,0 +1,25 @@
+{
+    "name": "imagewize/ssl-manager",
+    "description": "SSL Manager",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Karabutin Alex",
+            "email": "karabutin.alex@nexode.org"
+        }
+    ],
+    "autoload": {
+        "classmap": [
+            "database"
+        ],
+        "psr-4": {
+            "Imagewize\\SslManager\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "ext-curl": "*",
+        "laravel/framework": "5.4.*",
+        "stonemax/acme2": "^1.0"
+    }
+}
