@@ -40,7 +40,11 @@ class SslManagerProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(DnsService::class);
+        $this->app->singleton(DnsService::class, function (Container $app) {
+            return new DnsService(
+                config("ssl-manager.target_cname")
+            );
+        });
 
         $this->app->singleton(HttpService::class, function (Container $app) {
             return new HttpService(
@@ -62,8 +66,6 @@ class SslManagerProvider extends ServiceProvider
 
         $this->app->bind(SslControllerUpdateCertificate::class, function (Container $app) {
             return new SslControllerUpdateCertificate(
-                $app->make(DnsService::class),
-                config("ssl-manager.target_cname"),
                 config("ssl-manager.controller_queue")
             );
         });

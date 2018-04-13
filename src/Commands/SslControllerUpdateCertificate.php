@@ -20,16 +20,7 @@ class SslControllerUpdateCertificate extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
-    /**
-     * @var DnsService
-     */
-    private $dnsService;
-
-    /**
-     * @var string
-     */
-    private $targetCname;
+    protected $description = 'Request SSL certificate updating.';
 
     /**
      * @var string
@@ -39,15 +30,11 @@ class SslControllerUpdateCertificate extends Command
     /**
      * Create a new command instance.
      *
-     * @param DnsService $dnsService
-     * @param string $targetCname
      * @param string $controllerQueue
      */
-    public function __construct(DnsService $dnsService, $targetCname, $controllerQueue)
+    public function __construct($controllerQueue)
     {
         parent::__construct();
-        $this->dnsService = $dnsService;
-        $this->targetCname = $targetCname;
         $this->controllerQueue = $controllerQueue;
     }
 
@@ -59,17 +46,6 @@ class SslControllerUpdateCertificate extends Command
     public function handle()
     {
         $domain = $this->argument('domain');
-
-        if ($this->dnsService->getDomainCNAME($domain) !== $this->targetCname) {
-            $this->error(
-                sprintf(
-                    'Domain "%s" must be pointed to "%s" via CNAME record."',
-                    $domain,
-                    $this->targetCname
-                )
-            );
-            return;
-        }
 
         UpdateCertificate::dispatch($domain)->onQueue($this->controllerQueue);
 

@@ -2,13 +2,14 @@
 
 namespace Imagewize\SslManager\Jobs;
 
-use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Imagewize\SslManager\Core\DnsService;
 use Imagewize\SslManager\Core\SslService;
+use LogicException;
 
 class UpdateCertificate implements ShouldQueue
 {
@@ -39,10 +40,22 @@ class UpdateCertificate implements ShouldQueue
      *
      * @param SslService $sslService
      *
+     * @param DnsService $dnsService
      * @return void
      */
-    public function handle(SslService $sslService)
+    public function handle(SslService $sslService, DnsService $dnsService)
     {
+        if ($dnsService->hasProperCNAME($this->domain)) {
+            $this->fail(
+                new LogicException(sprintf(
+                    'Domain "%s" must have proper CNAME record."',
+                    $this->domain
+                ))
+            );
+
+            return;
+        }
+
         $sslService->updateCertificate($this->domain);
     }
 }
