@@ -45,7 +45,7 @@ class UpdateCertificate implements ShouldQueue
      */
     public function handle(SslService $sslService, DnsService $dnsService)
     {
-        if ($dnsService->hasProperCNAME($this->domain)) {
+        if (!$dnsService->hasProperCNAME($this->domain)) {
             $this->fail(
                 new LogicException(sprintf(
                     'Domain "%s" must have proper CNAME record."',
