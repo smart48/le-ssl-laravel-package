@@ -1,4 +1,4 @@
-#Laravel Let's Encrypt Laravel Package
+# Laravel Let's Encrypt Laravel Package
 
 ## Usage
 
@@ -69,7 +69,10 @@ Other option is installing it form the Git repository. For that composer.json sh
 }
 ```
 
-You may get
+
+See also this (url)[https://likegeeks.com/install-and-use-non-composer-laravel-packages/]
+
+**NB** Installing it locally just using the bare repository you may get
 ```
 [RuntimeException]                                                                     
   Could not scan for classes inside "database" which does not appear to be a file nor a  
