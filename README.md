@@ -2,6 +2,18 @@
 
 **Step 1**. Install package
 
+```
+composer install
+```
+
+You may get
+```
+[RuntimeException]                                                                     
+  Could not scan for classes inside "database" which does not appear to be a file nor a  
+   folder  
+```
+installing locally, but that is because it is not being installed from within a Laravel app.
+
 **Step 2**. Add service provider to your app:
 
 ```php
