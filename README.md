@@ -55,7 +55,7 @@ The best option is installing it form the Git repository. For that composer.json
 ```
 
 
-See also this [url](https://likegeeks.com/install-and-use-non-composer-laravel-packages/)
+See also this [url](https://likegeeks.com/install-and-use-non-composer-laravel-packages/) on setting up composer packages using private git repos.
 
 Once that is done you install it with composer
 
