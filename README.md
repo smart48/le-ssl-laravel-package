@@ -1,5 +1,7 @@
 # Laravel Let's Encrypt Laravel Package
 
+Laravel Let's Encrypt Laravel Package to install Let's Encrypt SSL Certificates for customers using CNAMES.
+
 ## Usage
 
 **Step 1**. Install package
@@ -47,19 +49,7 @@ Other option is installing it form the Git repository. For that composer.json sh
         }
     },
     "scripts": {
-        "post-root-package-install": [
-            "php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-        ],
-        "post-create-project-cmd": [
-            "php artisan key:generate"
-        ],
-        "post-install-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postInstall",
-            "php artisan optimize"
-        ],
-        "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "php artisan optimize"
+        .......
         ]
     },
     "config": {
