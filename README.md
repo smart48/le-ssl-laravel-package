@@ -4,13 +4,8 @@ Laravel Let's Encrypt Laravel Package to install Let's Encrypt SSL Certificates 
 
 ## Usage
 
-**Step 1**. Install package
 
-```
-composer install
-```
-
-Other option is installing it form the Git repository. For that composer.json should have something like
+The best option is installing it form the Git repository. For that composer.json should have something like
 
 ```
 {
@@ -62,6 +57,13 @@ Other option is installing it form the Git repository. For that composer.json sh
 
 See also this (url)[https://likegeeks.com/install-and-use-non-composer-laravel-packages/]
 
+Once that is done you install it with composer
+
+**Step 2**. Install package
+
+```
+composer install
+```
 **NB** Installing it locally just using the bare repository you may get
 ```
 [RuntimeException]                                                                     
@@ -70,7 +72,7 @@ See also this (url)[https://likegeeks.com/install-and-use-non-composer-laravel-p
 ```
 installing locally, but that is because it is not being installed from within a Laravel app.
 
-**Step 2**. Add service provider to your app:
+**Step 3**. Add service provider to your app:
 
 ```php
 # config/app
@@ -83,15 +85,15 @@ installing locally, but that is because it is not being installed from within a 
 
 ```
 
-**Step 3**. Publish configs and views:
+**Step 4**. Publish configs and views:
 
 ```bash
 php artisan vendor:publish
 ```
 
-**Step 4**. Configure `config/ssl-manager.php` and create specified there directories.
+**Step 5**. Configure `config/ssl-manager.php` and create specified there directories.
 
-**Step 5**. Add to your NGINX dynamically generated site configs directory:
+**Step 6**. Add to your NGINX dynamically generated site configs directory:
  
 ```
 # /etc/nginx/nginx.conf
