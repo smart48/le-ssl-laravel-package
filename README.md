@@ -5,7 +5,7 @@ Laravel Let's Encrypt Laravel Package to install Let's Encrypt SSL Certificates 
 ## Usage
 
 
-The best option is installing it form the Git repository. For that composer.json should have something like
+The best option is installing it from the private Git repository. For that composer.json should have something like
 
 ```
 {
