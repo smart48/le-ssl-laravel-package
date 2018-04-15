@@ -70,14 +70,14 @@ Other option is local installing:
 * unzip it and rename it as need be
 * Copy over package requirements into app composer.json (autoload class and required package) 
 
-**Step 1**. Install package
+## Step 1 Install package
 
 Stonemax package will be installed automatically when you run:
 ```
 composer install
 ```
 
-**Step 2**. Add service provider to your app:
+## Step 2. Add service provider to your app:
 
 ```php
 # config/app
@@ -90,15 +90,15 @@ composer install
 
 ```
 
-**Step 3**. Publish configs and views:
+## Step 3 Publish configs and views:
 
 ```bash
 php artisan vendor:publish
 ```
 
-**Step 4**. Configure `config/ssl-manager.php` and create specified there directories.
+## Step 4 Configure `config/ssl-manager.php` and create specified there directories.
 
-**Step 5**. Add to your NGINX dynamically generated site configs directory:
+## Step 5 Add to your NGINX dynamically generated site configs directory:
  
 ```
 # /etc/nginx/nginx.conf
