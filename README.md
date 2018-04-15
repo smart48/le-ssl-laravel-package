@@ -100,9 +100,13 @@ composer install
 php artisan vendor:publish
 ```
 
-## Step 4 Configure `config/ssl-manager.php` and create specified there directories.
+## Step 4 
 
-## Step 5 Add to your NGINX dynamically generated site configs directory:
+Configure `config/ssl-manager.php` and create specified there directories.
+
+## Step 5 
+
+Add to your NGINX dynamically generated site configs directory:
  
 ```
 # /etc/nginx/nginx.conf
