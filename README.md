@@ -60,10 +60,15 @@ See also this [url](https://likegeeks.com/install-and-use-non-composer-laravel-p
 
 Once that is done you install it with composer. 
 
-Other option is copying over package requirements into composer.json (autoload class and required package) and adding the needed files to the vendor directory.
+Other option is local installing:
+
+* Copy the zip file over to the vendors folder 
+* unzip it and rename it as need be
+* Copy over package requirements into app composer.json (autoload class and required package) 
 
 **Step 1**. Install package
 
+Stonemax package will be installed automatically when you run:
 ```
 composer install
 ```
