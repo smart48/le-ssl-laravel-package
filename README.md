@@ -120,14 +120,18 @@ http {
 }
 ```
 
-**Step 6**. Change views at `resources/views/imagewize/ssl-manager` as you need.
+## Step 6
 
-**Step 7**. Run SSL controller with required privileges:
+Change views at `resources/views/imagewize/ssl-manager` as you need.
 
-*Note 1: You can change the queue at `config/ssl-manager.php`.*
+## Step 7
 
-*Note 2: Queue mechanism is supposed to be configured.*
+Run SSL controller with required privileges:
 
 ```
 sudo php artisan queue:work --queue=ssl-manager -- redis
 ``` 
+
+*Note 1: You can change the queue at `config/ssl-manager.php`.*
+
+*Note 2: Queue mechanism is supposed to be configured.*
