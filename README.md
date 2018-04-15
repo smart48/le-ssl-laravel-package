@@ -4,6 +4,10 @@ Laravel Let's Encrypt Laravel Package to install Let's Encrypt SSL Certificates 
 
 ## Usage
 
+There are multiple ways to install Laravel Packages, but we recommend two here based on the current setup:
+
+* including private repo
+* local installation
 
 ### Private Repo Installation
 
