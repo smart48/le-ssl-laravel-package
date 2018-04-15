@@ -74,6 +74,22 @@ Other option is local installing:
 * unzip it and rename it as need be
 * Copy over package requirements into app composer.json (autoload class and required package) 
 
+### Local Manual Installation
+
+* Put package into your project (e.g. packages/imagewize/ssl-manager) 
+* add the following to your project's composer.json:
+```
+"autoload": {
+....
+"psr-4": {
+...
+"Imagewize\SslManager\": "packages/imagewize/ssl-manager/src/"
+}
+},
+```
+
+Don't forget about *composer dump-autoload*.
+
 ## Step 1 Install package
 
 Stonemax package will be installed automatically when you run:
