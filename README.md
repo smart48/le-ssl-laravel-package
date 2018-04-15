@@ -23,7 +23,8 @@ One option is installing it from the private Git repository. For that composer.j
     "require": {
         "php": ">=5.6.4",
         "appstract/laravel-opcache": "^1.1",
-        "imagewize/ssl-manager": "dev-master"
+        "imagewize/ssl-manager": "dev-master",
+        "stonemax/acme2": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
