@@ -5,7 +5,7 @@ Laravel Let's Encrypt Laravel Package to install Let's Encrypt SSL Certificates 
 ## Usage
 
 
-The best option is installing it from the private Git repository. For that composer.json should have something like
+One option is installing it from the private Git repository. For that composer.json should have something like
 
 ```
 {
@@ -55,24 +55,19 @@ The best option is installing it from the private Git repository. For that compo
 ```
 
 
-See also this [url](https://likegeeks.com/install-and-use-non-composer-laravel-packages/) on setting up composer packages using private git repos.
+See also this [url](https://likegeeks.com/install-and-use-non-composer-laravel-packages/) on setting up composer packages using private git repos. 
 
-Once that is done you install it with composer
+Once that is done you install it with composer. 
 
-**Step 2**. Install package
+Other option is copying over package requirements into composer.json (autoload class and required package) and adding the needed files to the vendor directory.
+
+**Step 1**. Install package
 
 ```
 composer install
 ```
-**NB** Installing it locally just using the bare repository you may get
-```
-[RuntimeException]                                                                     
-  Could not scan for classes inside "database" which does not appear to be a file nor a  
-   folder  
-```
-installing locally, but that is because it is not being installed from within a Laravel app.
 
-**Step 3**. Add service provider to your app:
+**Step 2**. Add service provider to your app:
 
 ```php
 # config/app
@@ -85,15 +80,15 @@ installing locally, but that is because it is not being installed from within a 
 
 ```
 
-**Step 4**. Publish configs and views:
+**Step 3**. Publish configs and views:
 
 ```bash
 php artisan vendor:publish
 ```
 
-**Step 5**. Configure `config/ssl-manager.php` and create specified there directories.
+**Step 4**. Configure `config/ssl-manager.php` and create specified there directories.
 
-**Step 6**. Add to your NGINX dynamically generated site configs directory:
+**Step 5**. Add to your NGINX dynamically generated site configs directory:
  
 ```
 # /etc/nginx/nginx.conf
