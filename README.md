@@ -81,7 +81,9 @@ Stonemax package will be installed automatically when you run:
 composer install
 ```
 
-## Step 2. Add service provider to your app:
+## Step 2 
+
+Add service provider to your app:
 
 ```php
 # config/app
@@ -94,7 +96,9 @@ composer install
 
 ```
 
-## Step 3 Publish configs and views:
+## Step 3 
+
+Publish configs and views:
 
 ```bash
 php artisan vendor:publish
