@@ -19,7 +19,7 @@
     "minimum-stability": "stable",
     "require": {
         "ext-curl": "*",
-        "laravel/framework": "5.4.*",
+        "laravel/framework": "^5.4.*",
         "stonemax/acme2": "^1.0"
     }
 }
