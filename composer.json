@@ -9,11 +9,15 @@
         }
     ],
     "autoload": {
-        "classmap": [
-            "database"
-        ],
         "psr-4": {
             "Imagewize\\SslManager\\": "src/"
+        }
+    },
+     "extra": {
+        "laravel": {
+            "providers": [
+                "Imagewize\\SslManager\\SslManagerProvider"
+            ]
         }
     },
     "minimum-stability": "stable",
