@@ -7,37 +7,49 @@ class DnsService
     /**
      * @var string
      */
-    private $targetCname;
+    private $targetHost;
 
     /**
      * DnsService constructor.
      *
-     * @param string $targetCname
+     * @param string $targetHost
      */
-    public function __construct($targetCname)
+    public function __construct($targetHost)
     {
-        $this->targetCname = $targetCname;
+        $this->targetHost = $targetHost;
     }
 
     /**
      * @param string $domain
-     * @return string|null
+     * @param int $type
+     * @return null|string[]
      */
-    public function getDomainCNAME($domain)
+    public function getDomainRecords($domain, $type)
     {
-        $records = dns_get_record($domain, DNS_CNAME);
+        $records = dns_get_record($domain, $type);
 
-        if (!$records) return null;
+        if ($records === false) {
+            return null;
+        }
 
-        return $records[0]['target'];
+        return array_column($records, 'target');
     }
 
     /**
      * @param string $domain
      * @return boolean
      */
-    public function hasProperCNAME($domain)
+    public function hasProperRecord($domain)
     {
-        return $this->getDomainCNAME($domain) === $this->targetCname;
+        $cnameRecords = $this->getDomainRecords($domain, DNS_CNAME);
+
+        if ($cnameRecords !== null && count($cnameRecords)) {
+            return array_search($this->targetHost, $cnameRecords) !== false;
+        }
+
+        return (bool) array_intersect(
+            $this->getDomainRecords($domain, DNS_A),
+            $this->getDomainRecords($this->targetHost, DNS_A)
+        );
     }
 }
