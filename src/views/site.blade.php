@@ -24,6 +24,7 @@ server {
 server {
     listen 443 ssl http2;
     server_name {{ $domain }};
+    root /home/forge/smart48.com/current/public;
 
     ssl on;
     ssl_certificate     {{ $certificateInfo['certificateFullChained'] }};
@@ -46,6 +47,11 @@ server {
 
     # Enable HSTS (https://developer.mozilla.org/en-US/docs/Security/HTTP_Strict_Transport_Security)
     add_header Strict-Transport-Security "max-age=63072000; includeSubdomains";
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-XSS-Protection "1; mode=block";
+    add_header X-Content-Type-Options "nosniff";
+
+    index index.html index.htm index.php;
 
     # Enable OCSP stapling (http://blog.mozilla.org/security/2013/07/29/ocsp-stapling-in-firefox)
     ssl_stapling on;
@@ -56,8 +62,22 @@ server {
     resolver_timeout 5s;
 
     location / {
-        default_type "text/html";
-        return 200 "It works!";
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    access_log off;
+    error_log  /var/log/nginx/{{ $domain }}-error.log error;
+
+    error_page 404 /index.php;
+
+    location ~ \.php$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
     }
 }
 @endif
