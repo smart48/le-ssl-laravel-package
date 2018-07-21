@@ -41,10 +41,10 @@ class DnsService
      */
     public function hasProperRecord($domain)
     {
-        $cnameRecords = $this->getDomainRecords($domain, DNS_A);
+        $anameRecords = $this->getDomainRecords($domain, DNS_A);
 
-        if ($cnameRecords !== null && count($cnameRecords)) {
-            return array_search($this->targetHost, $cnameRecords) !== false;
+        if ($anameRecords !== null && count($anameRecords)) {
+            return array_search($this->targetHost, $anameRecords) !== false;
         }
 
         return (bool) array_intersect(
