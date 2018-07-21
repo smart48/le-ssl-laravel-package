@@ -48,7 +48,7 @@ class UpdateCertificate implements ShouldQueue
         if (!$dnsService->hasProperRecord($this->domain)) {
             $this->fail(
                 new LogicException(sprintf(
-                    'Domain "%s" must have proper CNAME record."',
+                    'Domain "%s" must have proper A NAME record."',
                     $this->domain
                 ))
             );
