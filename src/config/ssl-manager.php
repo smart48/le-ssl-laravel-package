@@ -11,7 +11,7 @@ return [
     /**
      * Required domains A NAME.
      */
-    'target_aname' => 'your-app.com',
+    'target_aname' => 'your-ip.address',
 
 
     /**
