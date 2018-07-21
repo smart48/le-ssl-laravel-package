@@ -42,7 +42,7 @@ class SslManagerProvider extends ServiceProvider
     {
         $this->app->singleton(DnsService::class, function (Container $app) {
             return new DnsService(
-                config("ssl-manager.target_cname")
+                config("ssl-manager.target_aname")
             );
         });
 
