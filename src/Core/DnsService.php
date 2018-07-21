@@ -41,7 +41,7 @@ class DnsService
      */
     public function hasProperRecord($domain)
     {
-        $cnameRecords = $this->getDomainRecords($domain, DNS_CNAME);
+        $cnameRecords = $this->getDomainRecords($domain, DNS_A);
 
         if ($cnameRecords !== null && count($cnameRecords)) {
             return array_search($this->targetHost, $cnameRecords) !== false;
