@@ -1,6 +1,6 @@
 # Laravel Let's Encrypt Laravel Package
 
-Laravel Let's Encrypt Laravel Package to install Let's Encrypt SSL Certificates for customers using CNAMES.
+Laravel Let's Encrypt Laravel Package to install Let's Encrypt SSL Certificates for customers using A NAMES.
 
 ## Usage
 
@@ -36,14 +36,6 @@ One option is installing it from the private Git repository. For that composer.j
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~5.7"
-    },
-    "autoload": {
-        "classmap": [
-            "database"
-        ],
-        "psr-4": {
-            "App\\": "app/"
-        }
     },
     "autoload-dev": {
         "psr-4": {
