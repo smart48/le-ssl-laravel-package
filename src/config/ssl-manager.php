@@ -9,7 +9,7 @@ return [
 
 
     /**
-     * Required domains CNAME.
+     * Required domains A NAME.
      */
     'target_cname' => 'your-app.com',
 
