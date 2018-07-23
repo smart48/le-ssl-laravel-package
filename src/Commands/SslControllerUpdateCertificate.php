@@ -45,6 +45,7 @@ class SslControllerUpdateCertificate extends Command
      */
     public function handle()
     {
+        // https://goo.gl/JRx2aY Matt Stauffer $this->argument('argumentName')
         $domain = $this->argument('domain');
 
         UpdateCertificate::dispatch($domain)->onQueue($this->controllerQueue);
