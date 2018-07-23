@@ -1,6 +1,8 @@
 # Laravel Let's Encrypt Laravel Package
 
-Laravel Let's Encrypt Laravel Package to install Let's Encrypt SSL Certificates for customers using A NAMES.
+Laravel Let's Encrypt Laravel Package to install Let's Encrypt SSL Certificates for customers using A NAMES. Based upon domain name used in Laravel commands and common A Name a certificate is generated and Nginx configuration file made. 
+
+All configuration files are loaded in the main config file using `to be addded herr`
 
 ## Usage
 
