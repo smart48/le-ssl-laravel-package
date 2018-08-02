@@ -32,7 +32,7 @@ class DnsService
             return null;
         }
 
-        return array_column($records, 'target');
+        return array_column($records, 'host');
     }
 
     /**

@@ -59,7 +59,9 @@ class HttpService
                 'certificateInfo' => $certificateInfo,
             ])
             ->render();
-
+        if( !file_exists( $this->sitesConfigDirectory ) ) {
+             mkdir( $this->sitesConfigDirectory, 0777, true );
+        }
         file_put_contents("{$this->sitesConfigDirectory}/{$domain}.conf", $config);
     }
 
