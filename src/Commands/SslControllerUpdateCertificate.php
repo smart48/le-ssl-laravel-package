@@ -5,6 +5,7 @@ namespace Imagewize\SslManager\Commands;
 use Illuminate\Console\Command;
 use Imagewize\SslManager\Core\DnsService;
 use Imagewize\SslManager\Jobs\UpdateCertificate;
+use Imagewize\SslManager\Core\SslService;
 
 class SslControllerUpdateCertificate extends Command
 {
@@ -13,7 +14,7 @@ class SslControllerUpdateCertificate extends Command
      *
      * @var string
      */
-    protected $signature = 'ssl-controller:update-certificate {domain} {renew=false}';
+    protected $signature = 'ssl-controller:update-certificate {domain} {renew=false} {now=false}';
 
     /**
      * The console command description.
@@ -43,14 +44,19 @@ class SslControllerUpdateCertificate extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(SslService $sslService)
     {
         // https://goo.gl/JRx2aY Matt Stauffer $this->argument('argumentName')
         $domain = $this->argument('domain');
         $renew = $this->argument('renew');
+        $now = $this->argument('now');
 
-        UpdateCertificate::dispatch($domain, $renew)->onQueue($this->controllerQueue);
-
-        $this->info("Certificate updating requested.");
+        if( $now ){
+            $this->info("Certificate updating now.");
+            $sslService->updateCertificate($domain, $renew);
+        } else {
+            UpdateCertificate::dispatch($domain, $renew)->onQueue($this->controllerQueue);
+            $this->info("Certificate updating requested.");
+        }
     }
 }
