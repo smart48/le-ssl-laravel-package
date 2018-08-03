@@ -24,15 +24,17 @@ class UpdateCertificate implements ShouldQueue
      * @var string
      */
     private $domain;
+    private $renew;
 
     /**
      * Create a new job instance.
      *
      * @param string $domain
      */
-    public function __construct($domain)
+    public function __construct( $domain, $renew )
     {
         $this->domain = $domain;
+        $this->renew = $renew;
     }
 
     /**
@@ -45,17 +47,18 @@ class UpdateCertificate implements ShouldQueue
      */
     public function handle(SslService $sslService, DnsService $dnsService)
     {
-        if (!$dnsService->hasProperRecord($this->domain)) {
-            $this->fail(
-                new LogicException(sprintf(
-                    'Domain "%s" must have proper A NAME record."',
-                    $this->domain
-                ))
-            );
+        // temporary disable this check
+        // if (!$dnsService->hasProperRecord($this->domain)) {
+        //     $this->fail(
+        //         new LogicException(sprintf(
+        //             'Domain "%s" must have proper A NAME record."',
+        //             $this->domain
+        //         ))
+        //     );
 
-            return;
-        }
+        //     return;
+        // }
 
-        $sslService->updateCertificate($this->domain);
+        $sslService->updateCertificate($this->domain, $this->renew = false);
     }
 }

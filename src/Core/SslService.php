@@ -40,7 +40,7 @@ class SslService
         $this->httpServer = $httpService;
     }
 
-    public function updateCertificate($domain)
+    public function updateCertificate($domain, $renew = false)
     {
         $client = new Client([$this->accountEmail], $this->storagePath, false);
         $order = $client->getOrder(
@@ -48,14 +48,16 @@ class SslService
                 CommonConstant::CHALLENGE_TYPE_HTTP => [$domain],
             ],
             CommonConstant::KEY_PAIR_TYPE_RSA,
-            true
+            $renew
         );
 
-        try {
-            $certificateInfo = $order->getCertificateFile();
-        } catch (Exception $e) {
-            $certificateInfo = null;
-        }
+        // temporary disable this check
+        // try {
+        //     $certificateInfo = $order->getCertificateFile();
+        // } catch (Exception $e) {
+        //     $certificateInfo = null;
+        // }
+        $certificateInfo = null;
 
         $pendingChallenges = $order->getPendingChallengeList();
 
@@ -66,8 +68,8 @@ class SslService
             if ($challengeType == CommonConstant::CHALLENGE_TYPE_HTTP) {
                 $domainChallengeDirectory = "{$this->challengeDirectory}/{$credential['identifier']}";
 
-                if ( !file_exists( $domainChallengeDirectory ) ) {
-                    mkdir( $domainChallengeDirectory, 0777, true );
+                if (!file_exists($domainChallengeDirectory)) {
+                    mkdir($domainChallengeDirectory, 0777, true);
                 }
 
                 file_put_contents(
