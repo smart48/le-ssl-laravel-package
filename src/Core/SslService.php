@@ -61,6 +61,8 @@ class SslService
 
         $pendingChallenges = $order->getPendingChallengeList();
 
+        var_dump($pendingChallenges);
+
         foreach ($pendingChallenges as $challenge) {
             $challengeType = $challenge->getType();
             $credential = $challenge->getCredential();
@@ -69,7 +71,7 @@ class SslService
                 $domainChallengeDirectory = "{$this->challengeDirectory}/{$credential['identifier']}";
 
                 if (!file_exists($domainChallengeDirectory)) {
-                    mkdir($domainChallengeDirectory, 0777, true);
+                    mkdir($domainChallengeDirectory, 0755, true);
                 }
 
                 file_put_contents(
