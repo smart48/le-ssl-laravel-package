@@ -74,6 +74,8 @@ class HttpService
         system($this->httpReloadCommand, $exitCode);
         ob_end_clean();
 
+        sleep(5);
+
         return ! $exitCode;
     }
 }
