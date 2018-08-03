@@ -51,7 +51,7 @@ class SslControllerUpdateCertificate extends Command
         $renew = $this->argument('renew');
         $now = $this->argument('now');
 
-        if( $now ){
+        if( $now == 'true' ){
             $this->info("Certificate updating now.");
             $sslService->updateCertificate($domain, $renew);
         } else {

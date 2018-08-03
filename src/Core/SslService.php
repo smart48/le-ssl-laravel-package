@@ -61,8 +61,6 @@ class SslService
 
         $pendingChallenges = $order->getPendingChallengeList();
 
-        var_dump($pendingChallenges);
-
         foreach ($pendingChallenges as $challenge) {
             $challengeType = $challenge->getType();
             $credential = $challenge->getCredential();
@@ -90,5 +88,7 @@ class SslService
 
         $this->httpServer->updateSite($domain, $certificateInfo);
         $this->httpServer->reloadConfiguration();
+
+        echo "Done!";
     }
 }
