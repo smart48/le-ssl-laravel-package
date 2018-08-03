@@ -13,7 +13,7 @@ class SslControllerUpdateCertificate extends Command
      *
      * @var string
      */
-    protected $signature = 'ssl-controller:update-certificate {domain}';
+    protected $signature = 'ssl-controller:update-certificate {domain} {renew=false}';
 
     /**
      * The console command description.
@@ -47,8 +47,9 @@ class SslControllerUpdateCertificate extends Command
     {
         // https://goo.gl/JRx2aY Matt Stauffer $this->argument('argumentName')
         $domain = $this->argument('domain');
+        $renew = $this->argument('renew');
 
-        UpdateCertificate::dispatch($domain)->onQueue($this->controllerQueue);
+        UpdateCertificate::dispatch($domain, $renew)->onQueue($this->controllerQueue);
 
         $this->info("Certificate updating requested.");
     }
