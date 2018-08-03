@@ -60,7 +60,7 @@ class HttpService
             ])
             ->render();
         if( !file_exists( $this->sitesConfigDirectory ) ) {
-             mkdir( $this->sitesConfigDirectory, 0777, true );
+             mkdir( $this->sitesConfigDirectory, 0755, true );
         }
         file_put_contents("{$this->sitesConfigDirectory}/{$domain}.conf", $config);
     }
