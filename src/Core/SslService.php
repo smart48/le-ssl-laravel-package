@@ -56,13 +56,7 @@ class SslService
             $renew
         );
 
-        // temporary disable this check
-        // try {
-        //     $certificateInfo = $order->getCertificateFile();
-        // } catch (Exception $e) {
-        //     $certificateInfo = null;
-        // }
-        
+        echo "+ Order expires " . $order->expires . "\r\n";
 
         $pendingChallenges = $order->getPendingChallengeList();
         // $pendingChallenges = [];
