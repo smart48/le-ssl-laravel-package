@@ -74,7 +74,7 @@ class SslService
                 $credential = $challenge->getCredential();
 
                 if ($challengeType == CommonConstant::CHALLENGE_TYPE_HTTP) {
-                    $domainChallengeDirectory = "{$this->challengeDirectory}/{$credential['identifier']}";
+                    $domainChallengeDirectory = "{$this->challengeDirectory}/{$domain}";
 
                     if (!file_exists($domainChallengeDirectory)) {
                         mkdir($domainChallengeDirectory, 0755, true);
