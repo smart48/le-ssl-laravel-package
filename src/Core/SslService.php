@@ -43,7 +43,7 @@ class SslService
     public function updateCertificate($domain, $renew = false)
     {
 
-        echo "+ Adding web server configuration for " + $credential['identifier'] + "\r\n";
+        echo "+ Adding web server configuration for " + $domain + "\r\n";
         $certificateInfo = null;
         $this->httpServer->updateSite($domain, $certificateInfo);
         $this->httpServer->reloadConfiguration();
@@ -81,7 +81,7 @@ class SslService
                 }
 
 
-                echo "+ Saving certificate file for " + $credential['identifier'] + "\r\n";
+                echo "+ Saving certificate file for " + $domain + "\r\n";
 
                 file_put_contents(
                     "{$domainChallengeDirectory}/{$credential['fileName']}",
