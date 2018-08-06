@@ -43,13 +43,9 @@ class SslService
     public function updateCertificate($domain, $renew = false)
     {
 
-        echo "+ Adding web server configuration for " . $domain . "\r\n";
-        $certificateInfo = null;
-        $this->httpServer->updateSite($domain, $certificateInfo);
-        $this->httpServer->reloadConfiguration();
-
-        echo "+ Starting certificate generation\r\n";
+        echo "+ Starting ...\r\n";
         $client = new Client([$this->accountEmail], $this->storagePath, false);
+        $renew = filter_var($renew, FILTER_VALIDATE_BOOLEAN);
         $order = $client->getOrder(
             [
                 CommonConstant::CHALLENGE_TYPE_HTTP => [$domain],
@@ -68,36 +64,46 @@ class SslService
 
         $pendingChallenges = $order->getPendingChallengeList();
 
-        echo "+ Starting challenges\r\n";
-        foreach ($pendingChallenges as $challenge) {
-            $challengeType = $challenge->getType();
-            $credential = $challenge->getCredential();
+        if (!empty($pendingChallenges)){
 
-            if ($challengeType == CommonConstant::CHALLENGE_TYPE_HTTP) {
-                $domainChallengeDirectory = "{$this->challengeDirectory}/{$credential['identifier']}";
+            echo "+ Adding web server configuration for " . $domain . "\r\n";
+            $certificateInfo = null;
+            $this->httpServer->updateSite($domain, $certificateInfo);
+            $this->httpServer->reloadConfiguration();
 
-                if (!file_exists($domainChallengeDirectory)) {
-                    mkdir($domainChallengeDirectory, 0755, true);
+            echo "+ Starting challenges\r\n";
+            foreach ($pendingChallenges as $challenge) {
+                $challengeType = $challenge->getType();
+                $credential = $challenge->getCredential();
+
+                if ($challengeType == CommonConstant::CHALLENGE_TYPE_HTTP) {
+                    $domainChallengeDirectory = "{$this->challengeDirectory}/{$credential['identifier']}";
+
+                    if (!file_exists($domainChallengeDirectory)) {
+                        mkdir($domainChallengeDirectory, 0755, true);
+                    }
+
+
+                    echo "+ Saving challenge file for " . $domain . "\r\n";
+
+                    file_put_contents(
+                        "{$domainChallengeDirectory}/{$credential['fileName']}",
+                        $credential['fileContent']
+                    );
                 }
-
-
-                echo "+ Saving certificate file for " . $domain . "\r\n";
-
-                file_put_contents(
-                    "{$domainChallengeDirectory}/{$credential['fileName']}",
-                    $credential['fileContent']
-                );
+                echo "+ Verifying challenge for " . $domain . "\r\n";
+                $challenge->verify();
             }
-
-            $challenge->verify();
+            
+            echo "+ Getting certificate info (this can take a while)\r\n";
+            $certificateInfo = $order->getCertificateFile();
+            echo "+ Writing certificate to nginx config\r\n";
+            $this->httpServer->updateSite($domain, $certificateInfo);
+            echo "+ Reloading web server configuration\r\n";
+            $this->httpServer->reloadConfiguration();
+        } else {
+            echo "+ There are no pending challenges (No need for renew)\r\n";
         }
-        
-        echo "+ Getting certificate info (this can take a while)\r\n";
-        $certificateInfo = $order->getCertificateFile();
-        echo "+ Writing certificate to nginx config\r\n";
-        $this->httpServer->updateSite($domain, $certificateInfo);
-        echo "+ Reloading web server configuration\r\n";
-        $this->httpServer->reloadConfiguration();
 
         echo "Done!\r\n";
     }
