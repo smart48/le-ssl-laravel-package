@@ -40,11 +40,12 @@ class SslService
         $this->httpServer = $httpService;
     }
 
-    public function updateCertificate($domain, $renew = false)
+    public function updateCertificate($domain, $renew = true)
     {
 
         echo "+ Starting ...\r\n";
-        $client = new Client([$this->accountEmail], $this->storagePath, false);
+        $staging = true;
+        $client = new Client([$this->accountEmail], $this->storagePath, $staging);
         $renew = filter_var($renew, FILTER_VALIDATE_BOOLEAN);
         $order = $client->getOrder(
             [
@@ -60,11 +61,12 @@ class SslService
         // } catch (Exception $e) {
         //     $certificateInfo = null;
         // }
-        // 
+        
 
         $pendingChallenges = $order->getPendingChallengeList();
+        // $pendingChallenges = [];
 
-        if (!empty($pendingChallenges)){
+        if (!empty($pendingChallenges)) {
 
             echo "+ Adding web server configuration for " . $domain . "\r\n";
             $certificateInfo = null;
@@ -83,9 +85,7 @@ class SslService
                         mkdir($domainChallengeDirectory, 0755, true);
                     }
 
-
                     echo "+ Saving challenge file for " . $domain . "\r\n";
-
                     file_put_contents(
                         "{$domainChallengeDirectory}/{$credential['fileName']}",
                         $credential['fileContent']

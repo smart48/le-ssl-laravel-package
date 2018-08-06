@@ -14,7 +14,7 @@ class SslControllerUpdateCertificate extends Command
      *
      * @var string
      */
-    protected $signature = 'ssl-controller:update-certificate {domain} {renew=false} {now=false}';
+    protected $signature = 'ssl-controller:update-certificate {domain} {now=false}';
 
     /**
      * The console command description.
@@ -48,10 +48,11 @@ class SslControllerUpdateCertificate extends Command
     {
         // https://goo.gl/JRx2aY Matt Stauffer $this->argument('argumentName')
         $domain = $this->argument('domain');
-        $renew = $this->argument('renew');
+        // renewing cause deletion of the current certificate
+        $renew = false;
         $now = $this->argument('now');
 
-        if( $now == 'true' ){
+        if ($now == 'true') {
             $this->info("Certificate updating now.");
             $sslService->updateCertificate($domain, $renew);
         } else {
