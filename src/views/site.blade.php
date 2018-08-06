@@ -1,5 +1,6 @@
 server {
     listen 80;
+    listen [::]:80;
     server_name {{ $domain }};
 
     location /.well-known/acme-challenge {
@@ -23,6 +24,7 @@ server {
 @if ($certificateInfo)
 server {
     listen 443 ssl http2;
+    listen [::]:443 ssl http2;
     server_name {{ $domain }};
     root /home/forge/smart48.com/current/public;
 
