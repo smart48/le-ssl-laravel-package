@@ -44,7 +44,8 @@ class SslService
     {
 
         echo "+ Starting ...\r\n";
-        $staging = true;
+        // staging letsencrypt service
+        $staging = false;
         $client = new Client([$this->accountEmail], $this->storagePath, $staging);
         $renew = filter_var($renew, FILTER_VALIDATE_BOOLEAN);
         $order = $client->getOrder(
