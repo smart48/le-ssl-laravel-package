@@ -43,8 +43,12 @@ class SslService
     public function updateCertificate($domain, $renew = false)
     {
 
-        echo "+ Starting certificate generation\r\n";
+        echo "+ Adding web server configuration for " + $credential['identifier'] + "\r\n";
+        $certificateInfo = null;
+        $this->httpServer->updateSite($domain, $certificateInfo);
+        $this->httpServer->reloadConfiguration();
 
+        echo "+ Starting certificate generation\r\n";
         $client = new Client([$this->accountEmail], $this->storagePath, false);
         $order = $client->getOrder(
             [
@@ -60,7 +64,7 @@ class SslService
         // } catch (Exception $e) {
         //     $certificateInfo = null;
         // }
-        $certificateInfo = null;
+        // 
 
         $pendingChallenges = $order->getPendingChallengeList();
 
@@ -83,9 +87,6 @@ class SslService
                     "{$domainChallengeDirectory}/{$credential['fileName']}",
                     $credential['fileContent']
                 );
-
-                $this->httpServer->updateSite($domain, $certificateInfo);
-                $this->httpServer->reloadConfiguration();
             }
 
             $challenge->verify();
