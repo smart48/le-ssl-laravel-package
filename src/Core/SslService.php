@@ -43,7 +43,7 @@ class SslService
     public function updateCertificate($domain, $renew = false)
     {
 
-        echo "+ Starting certificate generation";
+        echo "+ Starting certificate generation\r\n";
 
         $client = new Client([$this->accountEmail], $this->storagePath, false);
         $order = $client->getOrder(
@@ -64,7 +64,7 @@ class SslService
 
         $pendingChallenges = $order->getPendingChallengeList();
 
-        echo "+ Starting challenges";
+        echo "+ Starting challenges\r\n";
         foreach ($pendingChallenges as $challenge) {
             $challengeType = $challenge->getType();
             $credential = $challenge->getCredential();
@@ -77,7 +77,7 @@ class SslService
                 }
 
 
-                echo "+ Saving certificate file for " + $credential['identifier'];
+                echo "+ Saving certificate file for " + $credential['identifier'] + "\r\n";
 
                 file_put_contents(
                     "{$domainChallengeDirectory}/{$credential['fileName']}",
@@ -91,12 +91,13 @@ class SslService
             $challenge->verify();
         }
         
-        echo "+ Writing certificate to nginx config";
+        echo "+ Getting certificate info (this can take a while)\r\n";
         $certificateInfo = $order->getCertificateFile();
+        echo "+ Writing certificate to nginx config\r\n";
         $this->httpServer->updateSite($domain, $certificateInfo);
-        echo "+ Restarting web server";
+        echo "+ Reloading web server configuration\r\n";
         $this->httpServer->reloadConfiguration();
 
-        echo "Done!";
+        echo "Done!\r\n";
     }
 }
