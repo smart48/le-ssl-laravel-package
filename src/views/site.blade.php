@@ -26,9 +26,8 @@ server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
     server_name {{ $domain }};
-    root /home/forge/smart48.com/current/public;
+    root {{ config("ssl-manager.root_site") }};
 
-    ssl on;
     ssl_certificate     {{ $certificateInfo['certificateFullChained'] }};
     ssl_certificate_key {{ $certificateInfo['privateKey'] }};
 

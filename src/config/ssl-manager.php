@@ -19,6 +19,11 @@ return [
      */
     'controller_queue' => 'ssl-manager',
 
+    /**
+     * Root project
+     */
+    'root_site' => env('SSL_ROOT_SITE', '/home/forge/smart48.com/current/public'),
+
 
     /**
      * Directory, where NGINX sites configs will be generated.
