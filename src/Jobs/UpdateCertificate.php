@@ -59,6 +59,6 @@ class UpdateCertificate implements ShouldQueue
         //     return;
         // }
 
-        $sslService->updateCertificate($this->domain, $this->renew = false);
+        $sslService->updateCertificate($this->domain, $this->renew);
     }
 }
