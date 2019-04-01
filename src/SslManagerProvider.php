@@ -29,7 +29,7 @@ class SslManagerProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/config/ssl-manager.php' => config_path('ssl-manager.php'),
-            __DIR__.'/views' => resource_path('views/imagewize/ssl-manager'),
+            __DIR__.'/views' => resource_path('views/ssl-manager'),
         ]);
     }
 
