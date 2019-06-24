@@ -59,46 +59,41 @@ class SslService
         echo "+ Order expires " . $order->expires . "\r\n";
 
         $pendingChallenges = $order->getPendingChallengeList();
-        // $pendingChallenges = [];
 
-        if (!empty($pendingChallenges)) {
 
-            echo "+ Adding web server configuration for " . $domain . "\r\n";
-            $certificateInfo = null;
-            $this->httpServer->updateSite($domain, $certificateInfo);
-            $this->httpServer->reloadConfiguration();
+        echo "+ Adding web server configuration for " . $domain . "\r\n";
+        $certificateInfo = null;
+        $this->httpServer->updateSite($domain, $certificateInfo);
+        $this->httpServer->reloadConfiguration();
 
-            echo "+ Starting challenges\r\n";
-            foreach ($pendingChallenges as $challenge) {
-                $challengeType = $challenge->getType();
-                $credential = $challenge->getCredential();
+        echo "+ Starting challenges\r\n";
+        foreach ($pendingChallenges as $challenge) {
+            $challengeType = $challenge->getType();
+            $credential = $challenge->getCredential();
 
-                if ($challengeType == CommonConstant::CHALLENGE_TYPE_HTTP) {
-                    $domainChallengeDirectory = "{$this->challengeDirectory}/{$domain}";
+            if ($challengeType == CommonConstant::CHALLENGE_TYPE_HTTP) {
+                $domainChallengeDirectory = "{$this->challengeDirectory}/{$domain}";
 
-                    if (!file_exists($domainChallengeDirectory)) {
-                        mkdir($domainChallengeDirectory, 0755, true);
-                    }
-
-                    echo "+ Saving challenge file for " . $domain . "\r\n";
-                    file_put_contents(
-                        "{$domainChallengeDirectory}/{$credential['fileName']}",
-                        $credential['fileContent']
-                    );
+                if (!file_exists($domainChallengeDirectory)) {
+                    mkdir($domainChallengeDirectory, 0755, true);
                 }
-                echo "+ Verifying challenge for " . $domain . "\r\n";
-                $challenge->verify();
+
+                echo "+ Saving challenge file for " . $domain . "\r\n";
+                file_put_contents(
+                    "{$domainChallengeDirectory}/{$credential['fileName']}",
+                    $credential['fileContent']
+                );
             }
-            
-            echo "+ Getting certificate info (this can take a while)\r\n";
-            $certificateInfo = $order->getCertificateFile();
-            echo "+ Writing certificate to nginx config\r\n";
-            $this->httpServer->updateSite($domain, $certificateInfo);
-            echo "+ Reloading web server configuration\r\n";
-            $this->httpServer->reloadConfiguration();
-        } else {
-            echo "+ There are no pending challenges (No need for renew)\r\n";
+            echo "+ Verifying challenge for " . $domain . "\r\n";
+            $challenge->verify();
         }
+        
+        echo "+ Getting certificate info (this can take a while)\r\n";
+        $certificateInfo = $order->getCertificateFile();
+        echo "+ Writing certificate to nginx config\r\n";
+        $this->httpServer->updateSite($domain, $certificateInfo);
+        echo "+ Reloading web server configuration\r\n";
+        $this->httpServer->reloadConfiguration();
 
         echo "Done!\r\n";
     }
