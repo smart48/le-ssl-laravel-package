@@ -32,19 +32,19 @@ return [
      *
      * include /var/www/your-app/storage/sites.d/*.conf;
      */
-    'sites_directory' => storage_path('sites.d'),
+    'sites_directory' => env('SSL_SITES_DIRECTORY'),
 
 
     /**
      * Directory, where Let's Encrypt's challenges will be stored temporarily.
      */
-    'challenge_directory' => storage_path('challenges'),
+    'challenge_directory' => env('SSL_CHALLENGE_DIRECTORY'),
 
 
     /**
      * Directory, where Let's Encrypt's data will be stored.
      */
-    'storage_directory' => storage_path('le-storage'),
+    'storage_directory' => env('SSL_STORAGE_DIRECTORY'),
 
 
     /**

@@ -2,7 +2,19 @@
 
 Laravel Let's Encrypt Laravel Package to install Let's Encrypt SSL Certificates for customers using A NAMES. Based upon domain name used in Laravel commands and common A Name a certificate is generated and Nginx configuration file made. 
 
-All configuration files are loaded in the main config file using `to be addded herr`
+All configuration files are loaded in the main config file `src/config/ssl-manager.php` which can be copied to `config/ssl-manager.php`.
+
+to be added in config file:
+
+- target_aname 
+- account_email
+
+to be added in .env:
+
+- SSL_ROOT_SITE
+- SSL_SITES_DIRECTORY
+- SSL_STORAGE_DIRECTORY
+
 
 ## Usage
 
