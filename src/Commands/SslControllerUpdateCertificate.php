@@ -14,7 +14,7 @@ class SslControllerUpdateCertificate extends Command
      *
      * @var string
      */
-    protected $signature = 'ssl-controller:update-certificate {domain} {now=false}';
+    protected $signature = 'ssl-controller:update-certificate {domain} {now=false} {renew=false}';
 
     /**
      * The console command description.
@@ -46,11 +46,17 @@ class SslControllerUpdateCertificate extends Command
      */
     public function handle(SslService $sslService)
     {
-        // https://goo.gl/JRx2aY Matt Stauffer $this->argument('argumentName')
+        /**
+         * See https://laravel.com/docs/6.x/artisan#command-structure
+         * 
+         * NB Renewing causes deletion of the current certificate 
+         * so only use `true` for 3rd parameter when need be
+         * 
+         **/
+        
         $domain = $this->argument('domain');
-        // renewing cause deletion of the current certificate
-        $renew = false;
         $now = $this->argument('now');
+        $renew = $this->argument('renew');
 
         if ($now == 'true') {
             $this->info("Certificate updating now.");
