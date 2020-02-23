@@ -18,14 +18,7 @@ to be added in .env:
 
 ## Usage
 
-There are multiple ways to install Laravel Packages, but we recommend two here based on the current setup:
-
-* including private repo
-* local installation
-
-### Private Repo Installation
-
-One option is installing it from the private Git repository. For that composer.json should have something like
+Installing it from the private Git repository. For  composer.json should have something like:
 
 ```
 {
@@ -72,33 +65,11 @@ See also this [url](https://likegeeks.com/install-and-use-non-composer-laravel-p
 
 Once that is done you install it with composer. 
 
-### Local Installation
-
-Other option is local installing:
-
-* Copy the zip file over to the vendors folder 
-* unzip it and rename it as need be
-* Copy over package requirements into app composer.json (autoload class and required package) 
-
-### Local Manual Installation
-
-* Put package into your project (e.g. packages/imagewize/ssl-manager) 
-* add the following to your project's composer.json:
-```
-"autoload": {
-....
-"psr-4": {
-...
-"Imagewize\SslManager\": "packages/imagewize/ssl-manager/src/"
-}
-},
-```
-
-Don't forget about *composer dump-autoload*.
 
 ## Step 1 Install package
 
 Stonemax package will be installed automatically when you run:
+
 ```
 composer install
 ```
