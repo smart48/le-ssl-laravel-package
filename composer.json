@@ -23,7 +23,7 @@
     "minimum-stability": "stable",
     "require": {
         "ext-curl": "*",
-        "laravel/framework": "^5.4 || ^6.0 || ^7.0",
+        "laravel/framework": "^5.4 || ^6.0 || ^7.0 || ^8.0",
         "stonemax/acme2": "^1.0"
     }
 }
