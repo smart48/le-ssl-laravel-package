@@ -95,20 +95,30 @@ server {
         include fastcgi_params;
     }
 
+    # cache Exceptions 
+    # https://medium.com/@nathobson/setting-up-fastcgi-caching-on-laravel-forge-cccecbd49ce
     # Cache everything by default
-    set $no_cache 0;# Don't cache POST requests
+    set $no_cache 0;
+    
+    # Don't cache POST requests
     if ($request_method = POST)
     {
         set $no_cache 1;
-    }# Don't cache if the URL contains a query string
+    }
+    
+    # Don't cache if the URL contains a query string
     if ($query_string != "")
     {
         set $no_cache 1;
-    }# Don't cache the following URLs
+    }
+    
+    # Don't cache the following URLs
     if ($request_uri ~* "/(cp/)")
     {
         set $no_cache 1;
-    }# Don't cache if there is a cookie called PHPSESSID
+    }
+    
+    # Don't cache if there is a cookie called PHPSESSID
     if ($http_cookie = "PHPSESSID")
     {
         set $no_cache 1;
