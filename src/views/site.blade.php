@@ -1,3 +1,6 @@
+fastcgi_cache_path /etc/nginx/cache levels=1:2 keys_zone=smart48:100m inactive=60m;
+fastcgi_cache_key "$scheme$request_method$host$request_uri";
+
 server {
     listen 80;
     listen [::]:80;
@@ -52,6 +55,10 @@ server {
     add_header X-XSS-Protection "1; mode=block";
     add_header X-Content-Type-Options "nosniff";
 
+    # Enable X-Cache 
+    # https://lyte.id.au/2014/08/28/x-cache-and-x-cache-lookupheaders/
+    add_header X-Cache $upstream_cache_status;
+
     index index.html index.htm index.php;
 
     # Enable OCSP stapling (http://blog.mozilla.org/security/2013/07/29/ocsp-stapling-in-firefox)
@@ -78,7 +85,33 @@ server {
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
         fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
         fastcgi_index index.php;
+        fastcgi_cache smart48;
+        fastcgi_cache_valid 200 1m;
+        fastcgi_cache_bypass $no_cache;
+        fastcgi_no_cache $no_cache;
+        fastcgi_cache_use_stale updating error timeout invalid_header http_500;
+        fastcgi_cache_lock on;
+        fastcgi_ignore_headers Cache-Control Expires Set-Cookie;
         include fastcgi_params;
+    }
+
+    # Cache everything by default
+    set $no_cache 0;# Don't cache POST requests
+    if ($request_method = POST)
+    {
+        set $no_cache 1;
+    }# Don't cache if the URL contains a query string
+    if ($query_string != "")
+    {
+        set $no_cache 1;
+    }# Don't cache the following URLs
+    if ($request_uri ~* "/(cp/)")
+    {
+        set $no_cache 1;
+    }# Don't cache if there is a cookie called PHPSESSID
+    if ($http_cookie = "PHPSESSID")
+    {
+        set $no_cache 1;
     }
 }
 @endif
