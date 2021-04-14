@@ -1,4 +1,5 @@
-fastcgi_cache_path /etc/nginx/cache levels=1:2 keys_zone=smart48:100m inactive=60m;
+# fastcgi path needs to be created
+fastcgi_cache_path /etc/nginx//{{ $domain }}/cache levels=1:2 keys_zone=smart48:100m inactive=60m;
 fastcgi_cache_key "$scheme$request_method$host$request_uri";
 
 server {
