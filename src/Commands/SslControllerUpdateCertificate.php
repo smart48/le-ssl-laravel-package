@@ -1,11 +1,11 @@
 <?php
 
-namespace Imagewize\SslManager\Commands;
+namespace Smart48\SslManager\Commands;
 
 use Illuminate\Console\Command;
-use Imagewize\SslManager\Core\DnsService;
-use Imagewize\SslManager\Jobs\UpdateCertificate;
-use Imagewize\SslManager\Core\SslService;
+use Smart48\SslManager\Core\DnsService;
+use Smart48\SslManager\Jobs\UpdateCertificate;
+use Smart48\SslManager\Core\SslService;
 
 class SslControllerUpdateCertificate extends Command
 {

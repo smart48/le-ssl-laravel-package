@@ -1,6 +1,6 @@
 <?php
 
-namespace Imagewize\SslManager\Core;
+namespace Smart48\SslManager\Core;
 
 class DnsService
 {

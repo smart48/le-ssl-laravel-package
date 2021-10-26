@@ -1,6 +1,6 @@
 <?php
 
-namespace Imagewize\SslManager\Commands;
+namespace Smart48\SslManager\Commands;
 
 use Illuminate\Console\Command;
 

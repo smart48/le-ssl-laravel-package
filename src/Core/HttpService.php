@@ -1,6 +1,6 @@
 <?php
 
-namespace Imagewize\SslManager\Core;
+namespace Smart48\SslManager\Core;
 
 use Illuminate\Contracts\View\Factory as ViewFactory;
 

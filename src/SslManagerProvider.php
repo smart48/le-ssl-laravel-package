@@ -1,15 +1,15 @@
 <?php
 
-namespace Imagewize\SslManager;
+namespace Smart48\SslManager;
 
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Support\ServiceProvider;
-use Imagewize\SslManager\Commands\SslControllerServe;
-use Imagewize\SslManager\Commands\SslControllerUpdateCertificate;
-use Imagewize\SslManager\Core\DnsService;
-use Imagewize\SslManager\Core\HttpService;
-use Imagewize\SslManager\Core\SslService;
+use Smart48\SslManager\Commands\SslControllerServe;
+use Smart48\SslManager\Commands\SslControllerUpdateCertificate;
+use Smart48\SslManager\Core\DnsService;
+use Smart48\SslManager\Core\HttpService;
+use Smart48\SslManager\Core\SslService;
 
 class SslManagerProvider extends ServiceProvider
 {

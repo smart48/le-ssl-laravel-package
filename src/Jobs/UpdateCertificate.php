@@ -1,14 +1,14 @@
 <?php
 
-namespace Imagewize\SslManager\Jobs;
+namespace Smart48\SslManager\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Imagewize\SslManager\Core\DnsService;
-use Imagewize\SslManager\Core\SslService;
+use Smart48\SslManager\Core\DnsService;
+use Smart48\SslManager\Core\SslService;
 use LogicException;
 
 class UpdateCertificate implements ShouldQueue
