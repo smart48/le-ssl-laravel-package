@@ -30,13 +30,13 @@ Installing it from the private Git repository. For  composer.json should have so
     "repositories": [
     {
         "type": "vcs",
-        "url": "git@github.com:jasperf/le-ssl-laravel-package.git"
+        "url": "git@github.com:smart48/le-ssl-laravel-package.git"
     }
   ],
     "require": {
         "php": ">=5.6.4",
         "appstract/laravel-opcache": "^1.1",
-        "imagewize/ssl-manager": "dev-master",
+        "smart48/ssl-manager": "dev-master",
         "stonemax/acme2": "^1.0"
     },
     "require-dev": {
@@ -84,7 +84,7 @@ Add service provider to your app:
 'providers' => [
     // ...
     
-    Imagewize\SslManager\SslManagerProvider::class,
+    Smart48\SslManager\SslManagerProvider::class,
 ],
 
 ```
@@ -119,7 +119,7 @@ http {
 
 ## Step 6
 
-Change views at `resources/views/imagewize/ssl-manager` as you need.
+Change views at `resources/views/Smart48/ssl-manager` as you need.
 
 ## Step 7
 
