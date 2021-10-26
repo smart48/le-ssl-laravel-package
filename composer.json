@@ -1,22 +1,22 @@
 {
-    "name": "imagewize/ssl-manager",
-    "description": "SSL Manager",
+    "name": "smart48/ssl-manager",
+    "description": "Smart48 SSL Manager",
     "type": "library",
     "authors": [
         {
-            "name": "Karabutin Alex",
-            "email": "karabutin.alex@nexode.org"
+            "name": "Smart48",
+            "email": "support@smart48.com"
         }
     ],
     "autoload": {
         "psr-4": {
-            "Imagewize\\SslManager\\": "src/"
+            "Smart48\\SslManager\\": "src/"
         }
     },
      "extra": {
         "laravel": {
             "providers": [
-                "Imagewize\\SslManager\\SslManagerProvider"
+                "Smart48\\SslManager\\SslManagerProvider"
             ]
         }
     },
