@@ -1,6 +1,6 @@
 <?php
 
-namespace Smart48\SslManager\Notifications;
+namespace Imagewize\SslManager\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
