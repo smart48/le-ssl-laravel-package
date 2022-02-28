@@ -18,7 +18,7 @@ class SslFailedNotification extends Notification
      */
     public function __construct()
     {
-        //
+        //  $this->ssl = $ssl;
     }
 
     /**
@@ -41,7 +41,7 @@ class SslFailedNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
+                    ->line('This error: {$this->ssl->error} has been received ordering a LE SSL certtificate.')
                     ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');
     }

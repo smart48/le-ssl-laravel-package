@@ -20,6 +20,8 @@ class SslManagerProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
         $this->commands([
             SslControllerServe::class,
             SslControllerUpdateCertificate::class,
