@@ -16,6 +16,7 @@ class CreateSslsTable extends Migration
         Schema::create('ssls', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('status')->nullable();
         });
     }
 
