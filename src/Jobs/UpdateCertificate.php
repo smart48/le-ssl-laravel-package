@@ -9,7 +9,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Imagewize\SslManager\Core\DnsService;
 use Imagewize\SslManager\Core\SslService;
-use LogicException;
+use Throwable;
+use Illuminate\Support\Facades\Notification;
+use Imagewize\SslManager\Notifications\FailedNotification;
 
 class UpdateCertificate implements ShouldQueue
 {
@@ -60,5 +62,17 @@ class UpdateCertificate implements ShouldQueue
         // }
 
         $sslService->updateCertificate($this->domain, $this->renew);
+    }
+
+    /**
+     * Handle a job failure.
+     *
+     * @param  \Throwable  $exception
+     * @return void
+     */
+    public function failed(Throwable $exception)
+    {
+        Notification::route('mail', config('ssl-manager.notification_failed_email'))
+                            ->notify(new FailedNotification($this->domain));
     }
 }
