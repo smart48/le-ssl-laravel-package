@@ -44,7 +44,8 @@ server {
 
     # Diffie-Hellman parameter for DHE ciphersuites
     # $ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 4096
-    ssl_dhparam /etc/ssl/certs/dhparam.pem;
+    # ssl_dhparam /etc/ssl/certs/dhparam.pem;
+    ssl_dhparam /etc/nginx/dhparams.pem;
 
     # Enable HSTS (https://developer.mozilla.org/en-US/docs/Security/HTTP_Strict_Transport_Security)
     add_header Strict-Transport-Security "max-age=63072000; includeSubdomains";
