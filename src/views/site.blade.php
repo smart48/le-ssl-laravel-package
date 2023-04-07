@@ -44,8 +44,7 @@ server {
 
     # Diffie-Hellman parameter for DHE ciphersuites
     # $ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 4096
-    # ssl_dhparam /etc/ssl/certs/dhparam.pem;
-    ssl_dhparam /etc/nginx/dhparams.pem;
+    ssl_dhparam /etc/ssl/certs/dhparam.pem;
 
     # Enable HSTS (https://developer.mozilla.org/en-US/docs/Security/HTTP_Strict_Transport_Security)
     add_header Strict-Transport-Security "max-age=63072000; includeSubdomains";
@@ -77,7 +76,7 @@ server {
 
     location ~ \.php$ {
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+        fastcgi_pass unix:/run/php/php8.1-fpm.sock;
         fastcgi_index index.php;
         include fastcgi_params;
     }
