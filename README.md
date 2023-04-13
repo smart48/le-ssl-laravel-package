@@ -119,6 +119,7 @@ http {
 
 
 and do `sudo visudo` to allow for restart of Nginx server without password entry using sudo
+
 ```
 # LE SSL Restart Nginx
 ploi ALL = NOPASSWD: /etc/init.d/nginx
