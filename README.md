@@ -117,6 +117,17 @@ http {
 }
 ```
 
+
+and do 
+
+sudo visudo to allow for restart of Nginx server without password entry using sudo
+```
+# LE SSL Restart Nginx
+ploi ALL = NOPASSWD: /etc/init.d/nginx
+```
+
+ploi as user here but could be forge or other user.
+
 ## Step 6
 
 Change views at `resources/views/imagewize/ssl-manager` as you need.
