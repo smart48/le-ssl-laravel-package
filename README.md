@@ -30,7 +30,7 @@ Installing it from the private Git repository. For  composer.json should have so
     "repositories": [
     {
         "type": "vcs",
-        "url": "git@github.com:jasperf/le-ssl-laravel-package.git"
+        "url": "git@github.com:smart48/le-ssl-laravel-package.git"
     }
   ],
     "require": {
@@ -118,9 +118,8 @@ http {
 ```
 
 
-and do 
+and do `sudo visudo` to allow for restart of Nginx server without password entry using sudo
 
-sudo visudo to allow for restart of Nginx server without password entry using sudo
 ```
 # LE SSL Restart Nginx
 ploi ALL = NOPASSWD: /etc/init.d/nginx
