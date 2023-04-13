@@ -117,6 +117,17 @@ http {
 }
 ```
 
+
+and do 
+
+sudo visudo to allow for restart of Nginx server without password entry using sudo
+```
+# LE SSL Restart Nginx
+ploi ALL = NOPASSWD: /etc/init.d/nginx
+```
+
+ploi as user here but could be forge or other user.
+
 ## Step 6
 
 Change views at `resources/views/imagewize/ssl-manager` as you need.
@@ -134,6 +145,6 @@ sudo php artisan queue:work --queue=ssl-manager -- redis
 *Note 2: Queue mechanism is supposed to be configured.*
 
 
-# Stonemax
+### Stonemax
 
 Package has been based on [Stonemax ACME2](https://github.com/stonemax/acme2)
