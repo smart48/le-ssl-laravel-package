@@ -134,6 +134,6 @@ sudo php artisan queue:work --queue=ssl-manager -- redis
 *Note 2: Queue mechanism is supposed to be configured.*
 
 
-# Stonemax
+### Stonemax
 
 Package has been based on [Stonemax ACME2](https://github.com/stonemax/acme2)
