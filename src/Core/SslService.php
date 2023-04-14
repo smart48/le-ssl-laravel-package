@@ -79,15 +79,21 @@ class SslService
                 }
 
                 echo "+ Saving challenge file for " . $domain . "\r\n";
-                file_put_contents(
+                if (file_put_contents(
                     "{$domainChallengeDirectory}/{$credential['fileName']}",
                     $credential['fileContent']
-                );
+                ) === false) {
+                    throw new Exception("Failed to save challenge file for " . $domain);
+                }
             }
             echo "+ Verifying challenge for " . $domain . "\r\n";
-            $challenge->verify();
+            try {
+                $challenge->verify();
+            } catch (Exception $e) {
+                throw new Exception("Failed to verify challenge for " . $domain . ": " . $e->getMessage());
+            }
         }
-        
+
         echo "+ Getting certificate info (this can take a while)\r\n";
         $certificateInfo = $order->getCertificateFile();
         echo "+ Writing certificate to nginx config\r\n";
