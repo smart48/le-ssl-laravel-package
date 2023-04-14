@@ -49,8 +49,12 @@ return [
 
     /**
      * Command for reloading HTTP server's config.
+     * 
+     * Ubuntu servers with init.d - passwordless sudo for command 
+     * needed
      */
-    'http_config_reload' => '/usr/sbin/nginx -s reload',
+    // 'http_config_reload' => '/usr/sbin/nginx -s reload',
+    'http_config_reload' => 'sudo /etc/init.d/nginx restart',
 
     'notification_failed_email' => env('SSL_NOTIFICATION_FAILED_EMAIL'),
 ];
