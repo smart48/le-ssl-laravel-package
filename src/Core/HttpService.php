@@ -2,6 +2,7 @@
 
 namespace Imagewize\SslManager\Core;
 
+use Exception;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 
 class HttpService
@@ -67,15 +68,30 @@ class HttpService
 
     /**
      * @return boolean
+     * @throws Exception if unable to reload configuration
      */
     public function reloadConfiguration()
     {
-        ob_start();
-        system($this->httpReloadCommand, $exitCode);
-        ob_end_clean();
+        $output = '';
+        $exitCode = 0;
 
-        sleep(5);
+        try {
+            ob_start();
+            system($this->httpReloadCommand, $exitCode);
+            $output = ob_get_clean();
 
-        return ! $exitCode;
+            if ($exitCode !== 0) {
+                throw new Exception("Failed to reload configuration. Exit code: $exitCode. Output: $output");
+            }
+
+            sleep(5);
+
+            return true;
+        } catch (Exception $e) {
+            // Clean output buffer before re-throwing exception
+            ob_clean();
+            throw $e;
+        }
     }
+
 }
