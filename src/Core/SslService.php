@@ -56,6 +56,17 @@ class SslService
             $renew
         );
 
+        // If no order ID, create a new order
+        if (!$order->getOrderId()) {
+            echo "+ Creating new order for " . $domain . "\r\n";
+            $order = $client->createOrder(
+                [
+                    CommonConstant::CHALLENGE_TYPE_HTTP => [$domain],
+                ],
+                CommonConstant::KEY_PAIR_TYPE_RSA
+            );
+        }
+
         echo "+ Order expires " . $order->expires . "\r\n";
 
         $pendingChallenges = $order->getPendingChallengeList();
