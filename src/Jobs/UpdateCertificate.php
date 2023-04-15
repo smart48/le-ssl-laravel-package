@@ -49,17 +49,16 @@ class UpdateCertificate implements ShouldQueue
      */
     public function handle(SslService $sslService, DnsService $dnsService)
     {
-        // temporary disable this check
-        // if (!$dnsService->hasProperRecord($this->domain)) {
-        //     $this->fail(
-        //         new LogicException(sprintf(
-        //             'Domain "%s" must have proper A NAME record."',
-        //             $this->domain
-        //         ))
-        //     );
+        if (!$dnsService->hasProperRecord($this->domain)) {
+            $this->fail(
+                new LogicException(sprintf(
+                    'Domain "%s" must have proper A NAME record."',
+                    $this->domain
+                ))
+            );
 
-        //     return;
-        // }
+            return;
+        }
 
         $sslService->updateCertificate($this->domain, $this->renew);
     }
