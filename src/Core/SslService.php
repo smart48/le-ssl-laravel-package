@@ -56,7 +56,12 @@ class SslService
             $renew
         );
 
-        // If no order ID, create a new order
+        /**
+         * If no order ID, create a new order
+         * @Exception stonemax\acme2\exceptions\OrderException: Get order info failed, 
+         * the order url is: https://acme-v02.api.letsencrypt.org/acme/order/x/y
+         * No order for ID x
+         */
         if (!$order->getOrderId()) {
             echo "+ Creating new order for " . $domain . "\r\n";
             $order = $client->createOrder(
@@ -66,6 +71,9 @@ class SslService
                 CommonConstant::KEY_PAIR_TYPE_RSA
             );
         }
+
+        // perhaps challenge needs to be removed as well as nginx configuration
+        /* End for no order for ID x patch */
 
         echo "+ Order expires " . $order->expires . "\r\n";
 
