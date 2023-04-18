@@ -140,9 +140,10 @@ sudo php artisan queue:work --queue=ssl-manager -- redis
 ``` 
 
 
-`php artisan ssl-controller:update-certificate domain.com now true` - renew certificate now without queueing
-`php artisan ssl-controller:update-certificate domain.com` queue and update certificate
-_renew or true value in first command is new order and update is only new certificate . Now is no queue_
+`php artisan ssl-controller:update-certificate domain.com now true` - renew certificate now without queueing*
+`php artisan ssl-controller:update-certificate domain.com` queue and update certificate**
+* _renew or true value in first command is new order, **now**ß is no queue_
+** _update without values `now true` is only new certificate. _
 
 *Note 1: You can change the queue at `config/ssl-manager.php`.*
 
