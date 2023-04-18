@@ -139,6 +139,11 @@ Run SSL controller with required privileges:
 sudo php artisan queue:work --queue=ssl-manager -- redis
 ``` 
 
+
+`php artisan ssl-controller:update-certificate domain.com now true` - renew certificate now without queueing
+`php artisan ssl-controller:update-certificate domain.com` queue and update certificate
+_renew is new order and update is only new certificate . Now is no queue_
+
 *Note 1: You can change the queue at `config/ssl-manager.php`.*
 
 *Note 2: Queue mechanism is supposed to be configured.*
