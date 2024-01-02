@@ -40,28 +40,37 @@ class SslControllerUpdateCertificate extends Command
     }
 
     /**
-     * Execute the console command.
-     *
-     * @return mixed
+     * Handle the SSL certificate update command.
+     * 
+     * This command is designed to update SSL certificates for a specified domain using Laravel's Artisan CLI.
+     * The command structure follows Laravel's conventions (https://laravel.com/docs/6.x/artisan#command-structure).
+     * 
+     * @param SslService $sslService
+     *     The service responsible for SSL certificate operations.
+     * 
+     * @return void
      */
     public function handle(SslService $sslService)
     {
         /**
-         * See https://laravel.com/docs/6.x/artisan#command-structure
+         * See https://laravel.com/docs/9.x/artisan#command-structure
          * 
          * NB Renewing causes deletion of the current certificate 
          * so only use `true` for 3rd parameter when need be
          * 
          **/
-        
+
+        // Extracting command arguments
         $domain = $this->argument('domain');
         $now = $this->argument('now');
         $renew = $this->argument('renew');
 
+        // Check if the certificate update should be done immediately or queued for later
         if ($now == 'true') {
             $this->info("Certificate updating now.");
             $sslService->updateCertificate($domain, $renew);
         } else {
+            // Queue the certificate update for background processing
             UpdateCertificate::dispatch($domain, $renew)->onQueue($this->controllerQueue);
             $this->info("Certificate updating requested.");
         }
