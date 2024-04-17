@@ -1,36 +1,31 @@
 server {
     listen 80;
     listen [::]:80;
-    server_name {{ $domain }} www.{{ $domain }};
+    server_name www.{{ $domain }} {{ $domain }};
 
     location /.well-known/acme-challenge {
         default_type "text/plain";
         alias {{ $challengeDirectory }}/{{ $domain }};
     }
 
-    # Redirect www to non-www (HTTP)
+    # Redirect www to non-www and to HTTPS
     if ($host = "www.{{ $domain }}") {
-        return 301 http://{{ $domain }}$request_uri;
+        return 301 https://{{ $domain }}$request_uri;
     }
 
-@if ($certificateInfo)
-    # Redirect to HTTPS version
-    location / {
+    # Redirect HTTP to HTTPS
+    if ($host = "{{ $domain }}") {
         return 301 https://$host$request_uri;
     }
-@else
-    # Reset connection
-    location / {
-        return 444;
-    }
-@endif
+
+    # Reset connection if no valid redirection condition is met
+    return 444;
 }
 
-@if ($certificateInfo)
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
-    server_name {{ $domain }} www.{{ $domain }};
+    server_name {{ $domain }};
     root {{ config("ssl-manager.root_site") }};
 
     ssl_certificate     {{ $certificateInfo['certificateFullChained'] }};
@@ -67,11 +62,6 @@ server {
     resolver 8.8.8.8 8.8.4.4 valid=300s;
     resolver_timeout 5s;
 
-    # Redirect www to non-www (HTTPS)
-    if ($host = "www.{{ $domain }}") {
-        return 301 https://{{ $domain }}$request_uri;
-    }
-
     location / {
         try_files $uri $uri/ /index.php?$query_string;
     }
@@ -93,4 +83,3 @@ server {
         include fastcgi_params;
     }
 }
-@endif
