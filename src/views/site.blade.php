@@ -22,6 +22,7 @@ server {
     return 444;
 }
 
+@if ($certificateInfo)
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
@@ -83,3 +84,4 @@ server {
         include fastcgi_params;
     }
 }
+@endif
