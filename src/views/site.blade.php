@@ -1,7 +1,7 @@
 server {
     listen 80;
     listen [::]:80;
-    server_name {{ $domain }};
+    server_name {{ $domain }} www.{{ $domain }};
 
     location /.well-known/acme-challenge {
         default_type "text/plain";
