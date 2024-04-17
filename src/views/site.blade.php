@@ -8,6 +8,11 @@ server {
         alias {{ $challengeDirectory }}/{{ $domain }};
     }
 
+    # Redirect www to non-www (HTTP)
+    if ($host = "www.{{ $domain }}") {
+        return 301 http://{{ $domain }}$request_uri;
+    }
+
 @if ($certificateInfo)
     # Redirect to HTTPS version
     location / {
@@ -25,7 +30,7 @@ server {
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
-    server_name {{ $domain }};
+    server_name {{ $domain }} www.{{ $domain }};
     root {{ config("ssl-manager.root_site") }};
 
     ssl_certificate     {{ $certificateInfo['certificateFullChained'] }};
@@ -61,6 +66,11 @@ server {
 
     resolver 8.8.8.8 8.8.4.4 valid=300s;
     resolver_timeout 5s;
+
+    # Redirect www to non-www (HTTPS)
+    if ($host = "www.{{ $domain }}") {
+        return 301 https://{{ $domain }}$request_uri;
+    }
 
     location / {
         try_files $uri $uri/ /index.php?$query_string;
