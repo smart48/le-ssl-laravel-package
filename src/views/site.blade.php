@@ -1,4 +1,3 @@
-```nginx
 server {
     listen 80;
     listen [::]:80;
@@ -147,4 +146,3 @@ server {
     }
 }
 @endif
-```
