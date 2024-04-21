@@ -1,5 +1,3 @@
-Here's the full Nginx configuration file with separate SSL certificates for both www and non-www versions of the domain, including the necessary HTTP to HTTPS redirection:
-
 ```nginx
 server {
     listen 80;
