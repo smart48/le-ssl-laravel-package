@@ -150,5 +150,3 @@ server {
 }
 @endif
 ```
-
-This configuration
