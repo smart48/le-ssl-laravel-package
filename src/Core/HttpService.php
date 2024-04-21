@@ -47,22 +47,30 @@ class HttpService
     }
 
     /**
-     * @param string $domain
+     * @param array|string $domains
      * @param array|null $certificateInfo
      */
-    public function updateSite($domain, array $certificateInfo = null)
+    public function updateSite($domains, array $certificateInfo = null)
     {
-        $config = $this->viewFactory
-            ->make('ssl-manager::site', [
-                'domain' => $domain,
-                'challengeDirectory' => $this->challengeDirectory,
-                'certificateInfo' => $certificateInfo,
-            ])
-            ->render();
-        if (!file_exists($this->sitesConfigDirectory) ) {
-             mkdir($this->sitesConfigDirectory, 0755, true);
+        if (!is_array($domains)) {
+            $domains = [$domains];
         }
-        file_put_contents("{$this->sitesConfigDirectory}/{$domain}.conf", $config);
+
+        foreach ($domains as $domain) {
+            $config = $this->viewFactory
+                ->make('ssl-manager::site', [
+                    'domain' => $domain,
+                    'challengeDirectory' => $this->challengeDirectory,
+                    'certificateInfo' => $certificateInfo,
+                ])
+                ->render();
+
+            if (!file_exists($this->sitesConfigDirectory)) {
+                mkdir($this->sitesConfigDirectory, 0755, true);
+            }
+
+            file_put_contents("{$this->sitesConfigDirectory}/{$domain}.conf", $config);
+        }
     }
 
     /**
@@ -76,6 +84,6 @@ class HttpService
 
         sleep(5);
 
-        return ! $exitCode;
+        return !$exitCode;
     }
 }
