@@ -52,11 +52,18 @@ class HttpService
      */
     public function updateSite($domain, array $certificateInfo = null)
     {
+        $serverName = $domain;
+
+        if (count(explode('.', $domain)) === 2) {
+            $serverName = "$domain, www.$domain";
+        }
+
         $config = $this->viewFactory
             ->make('ssl-manager::site', [
                 'domain' => $domain,
                 'challengeDirectory' => $this->challengeDirectory,
                 'certificateInfo' => $certificateInfo,
+                'serverName' => $serverName
             ])
             ->render();
         if (!file_exists($this->sitesConfigDirectory) ) {
