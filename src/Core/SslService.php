@@ -42,6 +42,10 @@ class SslService
 
     public function updateCertificate($domain, $renew = true)
     {
+        $sslDomains = [$domain];
+        if (count(explode('.', $domain)) === 2) {
+            $sslDomains[] = "www.{$domain}";
+        }
 
         echo "+ Starting ...\r\n";
         // staging letsencrypt service
@@ -50,7 +54,7 @@ class SslService
         $renew = filter_var($renew, FILTER_VALIDATE_BOOLEAN);
         $order = $client->getOrder(
             [
-                CommonConstant::CHALLENGE_TYPE_HTTP => [$domain],
+                CommonConstant::CHALLENGE_TYPE_HTTP => [$domain, "www.{$domain}"],
             ],
             CommonConstant::KEY_PAIR_TYPE_RSA,
             $renew
