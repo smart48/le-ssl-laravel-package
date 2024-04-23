@@ -1,7 +1,7 @@
 server {
     listen 80;
     listen [::]:80;
-    server_name {{ $domain }};
+    server_name {{ $serverName }};
 
     location /.well-known/acme-challenge {
         default_type "text/plain";
@@ -25,7 +25,7 @@ server {
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
-    server_name {{ $domain }};
+    server_name {{ $serverName }};
     root {{ config("ssl-manager.root_site") }};
 
     ssl_certificate     {{ $certificateInfo['certificateFullChained'] }};
