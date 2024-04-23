@@ -55,7 +55,7 @@ class HttpService
         $serverName = $domain;
 
         if (count(explode('.', $domain)) === 2) {
-            $serverName = "$domain, www.$domain";
+            $serverName = "$domain www.$domain";
         }
 
         $config = $this->viewFactory
