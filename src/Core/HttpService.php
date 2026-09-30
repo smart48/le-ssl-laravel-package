@@ -50,7 +50,7 @@ class HttpService
      * @param string $domain
      * @param array|null $certificateInfo
      */
-    public function updateSite($domain, array $certificateInfo = null)
+    public function updateSite($domain, ?array $certificateInfo = null)
     {
         $serverName = $domain;
 

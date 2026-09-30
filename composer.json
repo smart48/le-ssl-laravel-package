@@ -2,6 +2,7 @@
     "name": "imagewize/ssl-manager",
     "description": "SSL Manager",
     "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Karabutin Alex",
@@ -23,7 +24,7 @@
     "minimum-stability": "stable",
     "require": {
         "ext-curl": "*",
-        "laravel/framework": "^5.4 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
+        "laravel/framework": "^10.0 || ^11.0 || ^12.0",
         "stonemax/acme2": "^1.0"
     }
 }
