@@ -49,6 +49,8 @@ This document provides guidelines for AI agents (like Vibe CLI) working on the *
 ### File Modifications
 - When updating `composer.json`, verify Laravel version compatibility across the range
 - PHP type hints should be explicitly nullable for optional parameters
+- Always use `.md` extension for markdown files (not `.markdown`)
+- Stage files explicitly with `git add <file>` before committing
 
 ## Common Tasks
 
@@ -76,6 +78,7 @@ Current version: **v1.3.1**
 - **Feature branches:** Use descriptive names (e.g., `laravel-11`, `www-issue`)
 - **Tags:** Version tags follow `vX.Y.Z` format (e.g., `v1.3`, `v1.2`)
 - **Commits:** Use conventional commit messages (e.g., `fix(php84): ...`, `chore(composer): ...`)
+- **Tooling:** Use `gh` (GitHub CLI) for PR operations when available (`gh pr create`, `gh pr view`, etc.)
 
 ## Testing
 
@@ -104,6 +107,14 @@ Before making changes, always check:
 - Certificate renewal (`renew` parameter) is a key feature
 - Nginx configuration generation is a core component
 
+## GitHub CLI (`gh`)
+
+When working with GitHub repositories, use the `gh` CLI tool for streamlined operations:
+- `gh pr create` - Create a pull request with pre-filled title/body
+- `gh pr view` - View PR details in terminal
+- `gh repo view` - Open repository in browser
+- Always include file extensions (`.md`, `.php`, `.json`) when creating new files
+
 ## For AI Agents
 
 When working on this repository:
@@ -113,3 +124,4 @@ When working on this repository:
 4. **Laravel compatibility:** Ensure changes work across all supported Laravel versions
 5. **Document changes:** Update CHANGELOG.md for any user-facing changes
 6. **Commit messages:** Use conventional commit format with scope if applicable
+7. **File extensions:** Always use `.md` for markdown files
