@@ -2,6 +2,7 @@
     "name": "imagewize/ssl-manager",
     "description": "SSL Manager",
     "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Karabutin Alex",
