@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated Laravel framework support to `^10.0 || ^11.0 || ^12.0` in composer.json
 - Made `certificateInfo` parameter in `updateSite` method explicitly nullable with `?array` type hint for PHP 8.4 compatibility
 
+### Removed
+- Removed stale `composer.lock` (pinned vulnerable Laravel 6 / Symfony 4.4 packages); libraries should not ship a lockfile
+
 ## [v1.3] - 2023-04-19
 
 ### Added

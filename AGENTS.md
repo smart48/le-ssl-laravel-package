@@ -18,7 +18,6 @@ This document provides guidelines for AI agents (like Vibe CLI) working on the *
 │       ├── HttpService.php
 │       └── ...
 ├── composer.json          # Dependencies and package config
-├── composer.lock          # Lock file
 ├── README.md              # User documentation
 ├── LICENSE.txt           # License file
 └── CHANGELOG.md          # Version history
@@ -31,7 +30,6 @@ This document provides guidelines for AI agents (like Vibe CLI) working on the *
 - **Dependencies:**
   - `ext-curl`: *
   - `stonemax/acme2`: ^1.0
-  - `league/flysystem`: ^1.1.5
 - **Key Features:**
   - Let's Encrypt certificate generation
   - Automatic certificate renewal
