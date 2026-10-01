@@ -29,7 +29,7 @@ This document provides guidelines for AI agents (like Vibe CLI) working on the *
 - **PHP Version:** 7.4+ (with PHP 8.4 compatibility)
 - **Dependencies:**
   - `ext-curl`: *
-  - `stonemax/acme2`: ^1.0
+  - `ext-openssl`; the ACME client lives in `src/Acme` (derived from `stonemax/acme2`)
 - **Key Features:**
   - Let's Encrypt certificate generation
   - Automatic certificate renewal

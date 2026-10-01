@@ -2,7 +2,7 @@
 
 A Laravel package that issues and renews free [Let's Encrypt](https://letsencrypt.org/) certificates for your customers' own domains, and generates the Nginx config for each one.
 
-It is built for apps where customers point their domain (`www.customer.com`) at your server with an A record and expect it to be served over HTTPS, such as website builders and white-label tools. It is not an ACME client itself: certificates are ordered through [stonemax/acme2](https://github.com/stonemax/acme2), an ACME v2 client library for PHP.
+It is built for apps where customers point their domain (`www.customer.com`) at your server with an A record and expect it to be served over HTTPS, such as website builders and white-label tools. Certificates are ordered with a bundled ACME v2 client (`src/Acme`, derived from [stonemax/acme2](https://github.com/stonemax/acme2), MIT).
 
 ## How it works
 
@@ -14,7 +14,7 @@ It is built for apps where customers point their domain (`www.customer.com`) at 
 
 The package contains a DNS check (`DnsService::hasProperRecord`) that verifies the A record points at `target_aname`, but the job does not call it at the moment (it is commented out in `UpdateCertificate`). If the A record is wrong, the Let's Encrypt challenge fails and you get the failure email.
 
-Only the HTTP-01 challenge and Let's Encrypt are supported today. The CA is fixed by the ACME client library, which knows Let's Encrypt only (production, or staging through a flag in `SslService`). Mind [Let's Encrypt's rate limits](https://letsencrypt.org/docs/rate-limits/) when testing.
+Only the HTTP-01 challenge and Let's Encrypt are supported today. The CA is fixed by the ACME client library, which knows Let's Encrypt only (production, or staging with `SSL_STAGING=true`). Mind [Let's Encrypt's rate limits](https://letsencrypt.org/docs/rate-limits/) when testing.
 
 ## Requirements
 
@@ -109,7 +109,7 @@ The arguments are `{domain} {now=false} {renew=false}`: `now` runs the job in th
 
 ## Credits
 
-Originally written by Karabutin Alex and maintained by [Imagewize](https://github.com/imagewize). Built on [stonemax/acme2](https://github.com/stonemax/acme2).
+Originally written by Karabutin Alex and maintained by [Imagewize](https://github.com/imagewize). The ACME client is derived from [stonemax/acme2](https://github.com/stonemax/acme2) by Zhang Jinlong (MIT, `LICENSE-acme2.txt`).
 
 ## License
 

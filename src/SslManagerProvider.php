@@ -60,7 +60,8 @@ class SslManagerProvider extends ServiceProvider
                 config("ssl-manager.account_email"),
                 config("ssl-manager.storage_directory"),
                 config("ssl-manager.challenge_directory"),
-                $app->make(HttpService::class)
+                $app->make(HttpService::class),
+                config("ssl-manager.staging", false)
             );
         });
 

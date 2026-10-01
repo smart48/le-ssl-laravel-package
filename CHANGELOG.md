@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.4.0] - 2026-10-01
+
+### Changed
+- The ACME client is part of this package now (`src/Acme`, namespace `Imagewize\SslManager\Acme`), taken from `stonemax/acme2` 1.0.4 (MIT, copyright Zhang Jinlong, see `LICENSE-acme2.txt`), which is no longer maintained. `stonemax/acme2` is no longer required; `ext-openssl` is. Apps that override `stonemax\acme2\services` classes must drop that override.
+- PHP 8.4: the services that copy the directory / order responses onto themselves allow dynamic properties; the removed `openssl_pkey_free()` call is gone.
+
+### Added
+- `staging` config option (`SSL_STAGING`, default false) to use Let's Encrypt's staging environment. Use a separate `storage_directory` while testing. Checked against staging: account registration, order and HTTP-01 challenge.
+
+## [v1.3.3] - 2026-10-01
+
+### Fixed
+- `DnsService::hasProperRecord` compared the queried host name with the target host instead of A record addresses, so it failed for every correctly configured domain. It now compares the IPv4 addresses of the domain and the target (the target may be a host name or an IP address).
+
+### Changed
+- `UpdateCertificate` checks the A record again before requesting or renewing a certificate (the check was disabled as "temporary"). A domain that does not point at `target_aname` fails the job with a `LogicException`. Domains behind a proxy (e.g. Cloudflare) resolve to the proxy's addresses and fail the check.
+
 ## [v1.3.2] - 2026-10-01
 
 ### Added
@@ -15,14 +32,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `README.md` rewritten: what the package does, how it works, installation (including publishing the config and view to the right paths), all config options and the commands. It no longer talks about a private repository
 - Default for `root_site` in `config/ssl-manager.php` is `/var/www/your-app/current/public` instead of a Smart48 server path (apps set `SSL_ROOT_SITE` anyway)
 - The repository moved from `smart48/le-ssl-laravel-package` to `imagewize/ssl-manager` (GitHub redirects the old URL)
-
-## [v1.3.3] - 2026-10-01
-
-### Fixed
-- `DnsService::hasProperRecord` compared the queried host name with the target host instead of A record addresses, so it failed for every correctly configured domain. It now compares the IPv4 addresses of the domain and the target (the target may be a host name or an IP address).
-
-### Changed
-- `UpdateCertificate` checks the A record again before requesting or renewing a certificate (the check was disabled as "temporary"). A domain that does not point at `target_aname` fails the job with a `LogicException`. Domains behind a proxy (e.g. Cloudflare) resolve to the proxy's addresses and fail the check.
 
 ## [v1.3.1] - 2026-09-30
 
