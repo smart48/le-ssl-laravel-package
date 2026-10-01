@@ -22,7 +22,7 @@ return [
     /**
      * Root project
      */
-    'root_site' => env('SSL_ROOT_SITE', '/home/forge/smart48.com/current/public'),
+    'root_site' => env('SSL_ROOT_SITE', '/var/www/your-app/current/public'),
 
 
     /**
