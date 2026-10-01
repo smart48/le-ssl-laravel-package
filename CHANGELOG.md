@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.3.2] - 2026-10-01
+
+### Added
+- `LICENSE.md` (MIT) with the correct copyright holders; it replaces `LICENSE.txt`, which carried the copyright line of an unrelated project
+- `composer.json` description, keywords, homepage and Imagewize as author
+
+### Changed
+- `README.md` rewritten: what the package does, how it works, installation (including publishing the config and view to the right paths), all config options and the commands. It no longer talks about a private repository
+- Default for `root_site` in `config/ssl-manager.php` is `/var/www/your-app/current/public` instead of a Smart48 server path (apps set `SSL_ROOT_SITE` anyway)
+- The repository moved from `smart48/le-ssl-laravel-package` to `imagewize/ssl-manager` (GitHub redirects the old URL)
+
 ## [v1.3.1] - 2026-09-30
 
 ### Added
