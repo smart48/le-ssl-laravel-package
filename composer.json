@@ -1,12 +1,18 @@
 {
     "name": "imagewize/ssl-manager",
-    "description": "SSL Manager",
+    "description": "Laravel package that issues and renews Let's Encrypt certificates for customer domains and generates their Nginx config",
+    "keywords": ["laravel", "ssl", "letsencrypt", "lets-encrypt", "acme", "nginx", "certificates"],
+    "homepage": "https://github.com/imagewize/ssl-manager",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
             "name": "Karabutin Alex",
             "email": "karabutin.alex@nexode.org"
+        },
+        {
+            "name": "Imagewize",
+            "homepage": "https://github.com/imagewize"
         }
     ],
     "autoload": {

@@ -1,157 +1,116 @@
-# Laravel Let's Encrypt Laravel Package
+# SSL Manager
 
-Laravel Let's Encrypt Laravel Package to install Let's Encrypt SSL Certificates for customers using A NAMES. Based upon domain name used in Laravel commands and common A Name a certificate is generated and Nginx configuration file made. 
+A Laravel package that issues and renews free [Let's Encrypt](https://letsencrypt.org/) certificates for your customers' own domains, and generates the Nginx config for each one.
 
-All configuration files are loaded in the main config file `src/config/ssl-manager.php` which can be copied to `config/ssl-manager.php`.
+It is built for apps where customers point their domain (`www.customer.com`) at your server with an A record and expect it to be served over HTTPS, such as website builders and white-label tools. It is not an ACME client itself: certificates are ordered through [stonemax/acme2](https://github.com/stonemax/acme2), an ACME v2 client library for PHP.
 
-to be added in config file:
+## How it works
 
-- target_aname 
-- account_email
+1. The customer points an A record for their domain at your server (`target_aname`).
+2. `ssl-controller:update-certificate <domain>` queues a job (or runs it right away with `now`).
+3. The job places the HTTP-01 challenge file and orders the certificate from Let's Encrypt (`SslService`). For a bare domain like `customer.com` the certificate also covers `www.customer.com`. The Nginx server config that uses the certificate is written by `HttpService`.
+4. Nginx is reloaded. A renewal is the same command, run again later.
+5. If the job fails, an email is sent to `notification_failed_email`.
 
-to be added in .env:
+The package contains a DNS check (`DnsService::hasProperRecord`) that verifies the A record points at `target_aname`, but the job does not call it at the moment (it is commented out in `UpdateCertificate`). If the A record is wrong, the Let's Encrypt challenge fails and you get the failure email.
 
-- SSL_ROOT_SITE
-- SSL_SITES_DIRECTORY
-- SSL_STORAGE_DIRECTORY
+Only the HTTP-01 challenge and Let's Encrypt are supported today. The CA is fixed by the ACME client library, which knows Let's Encrypt only (production, or staging through a flag in `SslService`). Mind [Let's Encrypt's rate limits](https://letsencrypt.org/docs/rate-limits/) when testing.
 
+## Requirements
+
+- Laravel 10, 11 or 12 (see `composer.json`)
+- Nginx, with permission to reload it (see *Nginx*)
+- A queue worker, Redis recommended (see *Usage*)
+- Public port 80 on your server, for the HTTP-01 challenge
+
+## Installation
+
+```
+composer require imagewize/ssl-manager
+```
+
+If the package is not on Packagist yet, add the repository to your `composer.json` first:
+
+```json
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "https://github.com/imagewize/ssl-manager.git"
+    }
+]
+```
+
+The service provider is discovered automatically. Publish the config and the Nginx view:
+
+```
+php artisan vendor:publish --provider="Imagewize\SslManager\SslManagerProvider"
+```
+
+This creates `config/ssl-manager.php` and `resources/views/ssl-manager/`. Change the view if your sites need a different Nginx server block.
+
+## Configuration
+
+All options are in `config/ssl-manager.php`:
+
+| Option | Env | Meaning |
+|--------|-----|---------|
+| `account_email` | - | Let's Encrypt account email |
+| `target_aname` | - | The IP address customers must point their A record at |
+| `controller_queue` | - | Queue name for the jobs (default `ssl-manager`) |
+| `root_site` | `SSL_ROOT_SITE` | The `public` directory of your app, used in the generated Nginx config |
+| `sites_directory` | `SSL_SITES_DIRECTORY` | Where the Nginx site configs are generated |
+| `challenge_directory` | `SSL_CHALLENGE_DIRECTORY` | Where HTTP-01 challenge files are placed temporarily |
+| `storage_directory` | `SSL_STORAGE_DIRECTORY` | Where account keys and certificates are stored |
+| `http_config_reload` | - | Command that reloads Nginx (default `/usr/sbin/nginx -s reload`) |
+| `notification_failed_email` | `SSL_NOTIFICATION_FAILED_EMAIL` | Who gets an email when an order fails |
+
+Create the three directories and make them writable by the user that runs the queue worker.
+
+### Nginx
+
+Include the generated site configs in your main config:
+
+```
+# /etc/nginx/nginx.conf
+http {
+    # ...
+    include /path-to-app/storage/sites.d/*.conf;
+}
+```
+
+The reload needs root. Allow the user that runs the worker to do it without a password (`sudo visudo`):
+
+```
+# SSL Manager: reload Nginx
+deploy ALL = NOPASSWD: /etc/init.d/nginx
+```
+
+Replace `deploy` with your own user (`forge`, `ploi`, ...), and the path with the reload command you configured.
 
 ## Usage
 
-Installing it from the private Git repository. For  composer.json should have something like:
+Run a queue worker for the package's queue, with the privileges it needs to write the configs and reload Nginx:
 
 ```
-{
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
-    "license": "MIT",
-    "type": "project",
-    "repositories": [
-    {
-        "type": "vcs",
-        "url": "git@github.com:smart48/le-ssl-laravel-package.git"
-    }
-  ],
-    "require": {
-        "php": ">=5.6.4",
-        "appstract/laravel-opcache": "^1.1",
-        "imagewize/ssl-manager": "dev-master",
-        "stonemax/acme2": "^1.0"
-    },
-    "require-dev": {
-        "fzaninotto/faker": "~1.4",
-        "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~5.7"
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests/"
-        }
-    },
-    "scripts": {
-        .......
-        ]
-    },
-    "config": {
-        "preferred-install": "dist",
-        "sort-packages": true
-    }
-}
+sudo php artisan queue:work redis --queue=ssl-manager
 ```
 
-
-See also this [url](https://likegeeks.com/install-and-use-non-composer-laravel-packages/) on setting up composer packages using private git repos. 
-
-Once that is done you install it with composer. 
-
-
-## Step 1 Install package
-
-Stonemax package will be installed automatically when you run:
+Request a certificate for a domain:
 
 ```
-composer install
+# queue the job: a new certificate for the domain
+php artisan ssl-controller:update-certificate customer.com
+
+# run it now, without the queue (a new order is only made when the third argument is true)
+php artisan ssl-controller:update-certificate customer.com now true
 ```
 
-## Step 2 
+The arguments are `{domain} {now=false} {renew=false}`: `now` runs the job in this process instead of queueing it, `renew` places a new order instead of reusing the existing certificate. Renewals are the same command; schedule it for your domains before their certificates expire (Let's Encrypt certificates last 90 days).
 
-Add service provider to your app:
+## Credits
 
-```php
-# config/app
+Originally written by Karabutin Alex and maintained by [Imagewize](https://github.com/imagewize). Built on [stonemax/acme2](https://github.com/stonemax/acme2).
 
-'providers' => [
-    // ...
-    
-    Imagewize\SslManager\SslManagerProvider::class,
-],
+## License
 
-```
-
-## Step 3 
-
-Publish configs and views:
-
-```bash
-php artisan vendor:publish
-```
-
-## Step 4 
-
-Configure `config/ssl-manager.php` and create specified there directories.
-
-## Step 5 
-
-Add to your NGINX dynamically generated site configs directory:
- 
-```
-# /etc/nginx/nginx.conf
-
-...
-
-http {
-  ...
-  
-  include /path-to-app/storage/sites.d/*.conf;
-}
-```
-
-
-and do `sudo visudo` to allow for restart of Nginx server without password entry using sudo
-
-```
-# LE SSL Restart Nginx
-ploi ALL = NOPASSWD: /etc/init.d/nginx
-```
-
-ploi as user here but could be forge or other user.
-
-## Step 6
-
-Change views at `resources/views/imagewize/ssl-manager` as you need.
-
-## Step 7
-
-Run SSL controller with required privileges:
-
-```
-sudo php artisan queue:work --queue=ssl-manager -- redis
-``` 
-
-
-```
-php artisan ssl-controller:update-certificate domain.com now true // renew certificate now without queueing*
-php artisan ssl-controller:update-certificate domain.com // queue and update certificate**
-```
-* _renew or true value in first command is new order, **now** is no queue_
-** _update without values `now true` is only new certificate._
-
-*Note 1: You can change the queue at `config/ssl-manager.php`.*
-
-*Note 2: Queue mechanism is supposed to be configured.*
-
-
-### Stonemax
-
-Package has been based on [Stonemax ACME2](https://github.com/stonemax/acme2)
+MIT, see [LICENSE.md](LICENSE.md).

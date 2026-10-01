@@ -1,4 +1,4 @@
-# AI Agent Instructions for le-ssl-laravel-package
+# AI Agent Instructions for ssl-manager
 
 This document provides guidelines for AI agents (like Vibe CLI) working on the **SSL Manager** Laravel package.
 
@@ -7,7 +7,7 @@ This document provides guidelines for AI agents (like Vibe CLI) working on the *
 **Package Name:** `imagewize/ssl-manager`  
 **Purpose:** A Laravel package for managing SSL certificates using Let's Encrypt  
 **Repository:** https://github.com/imagewize/ssl-manager  
-**License:** MIT (see LICENSE.txt)
+**License:** MIT (see LICENSE.md)
 
 ## Project Structure
 
@@ -19,7 +19,7 @@ This document provides guidelines for AI agents (like Vibe CLI) working on the *
 │       └── ...
 ├── composer.json          # Dependencies and package config
 ├── README.md              # User documentation
-├── LICENSE.txt           # License file
+├── LICENSE.md            # License file
 └── CHANGELOG.md          # Version history
 ```
 
@@ -68,11 +68,13 @@ This project uses **Semantic Versioning**:
 - **Minor (x.1.x):** Backwards-compatible new features
 - **Major (1.x.x):** Breaking changes
 
-Current version: **v1.3.1**
+Current version: **v1.3.2**
 
 ## Git Workflow
 
 - **Main branch:** `master`
+- **Code changes:** always a new branch and a pull request; documentation-only changes (README, LICENSE, AGENTS.md, CHANGELOG text) may go straight to `master`
+- **Atomic commits:** one commit per file, or per group of files that belong together
 - **Feature branches:** Use descriptive names (e.g., `laravel-11`, `www-issue`)
 - **Tags:** Version tags follow `vX.Y.Z` format (e.g., `v1.3`, `v1.2`)
 - **Commits:** Use conventional commit messages (e.g., `fix(php84): ...`, `chore(composer): ...`)
