@@ -3,8 +3,8 @@
 namespace Imagewize\SslManager\Core;
 
 use Exception;
-use stonemax\acme2\Client;
-use stonemax\acme2\constants\CommonConstant;
+use Imagewize\SslManager\Acme\Client;
+use Imagewize\SslManager\Acme\Constants\CommonConstant;
 
 class SslService
 {
@@ -28,16 +28,23 @@ class SslService
      */
     private $httpServer;
 
+    /**
+     * @var bool
+     */
+    private $staging;
+
     public function __construct(
         $accountEmail,
         $storagePath,
         $challengeDirectory,
-        HttpService $httpService
+        HttpService $httpService,
+        $staging = false
     ) {
         $this->accountEmail = $accountEmail;
         $this->storagePath = $storagePath;
         $this->challengeDirectory = $challengeDirectory;
         $this->httpServer = $httpService;
+        $this->staging = filter_var($staging, FILTER_VALIDATE_BOOLEAN);
     }
 
     public function updateCertificate($domain, $renew = true)
@@ -48,9 +55,8 @@ class SslService
         }
 
         echo "+ Starting ...\r\n";
-        // staging letsencrypt service
-        $staging = false;
-        $client = new Client([$this->accountEmail], $this->storagePath, $staging);
+        // staging letsencrypt service issues untrusted test certificates
+        $client = new Client([$this->accountEmail], $this->storagePath, $this->staging);
         $renew = filter_var($renew, FILTER_VALIDATE_BOOLEAN);
         $order = $client->getOrder(
             [

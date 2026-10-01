@@ -52,5 +52,11 @@ return [
      */
     'http_config_reload' => '/usr/sbin/nginx -s reload',
 
+    /**
+     * Use Let's Encrypt's staging environment (untrusted test certificates, high rate limits).
+     * Use a separate storage_directory while testing, the account keys differ per environment.
+     */
+    'staging' => env('SSL_STAGING', false),
+
     'notification_failed_email' => env('SSL_NOTIFICATION_FAILED_EMAIL'),
 ];
