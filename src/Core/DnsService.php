@@ -22,34 +22,51 @@ class DnsService
     /**
      * @param string $domain
      * @param int $type
+     * @param string $column Record field to return, `host` by default, `ip` for A records
      * @return null|string[]
      */
-    public function getDomainRecords($domain, $type)
+    public function getDomainRecords($domain, $type, $column = 'host')
     {
-        $records = dns_get_record($domain, $type);
+        $records = @dns_get_record($domain, $type);
 
         if ($records === false) {
             return null;
         }
 
-        return array_column($records, 'host');
+        return array_column($records, $column);
     }
 
     /**
+     * The IPv4 addresses a host resolves to. An IP address resolves to itself.
+     *
+     * @param string $host
+     * @return string[]
+     */
+    public function getAddresses($host)
+    {
+        if (filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+            return [$host];
+        }
+
+        $records = $this->getDomainRecords($host, DNS_A, 'ip');
+
+        return $records ?: [];
+    }
+
+    /**
+     * Whether the domain points at the target host (A records share an address).
+     *
      * @param string $domain
      * @return boolean
      */
     public function hasProperRecord($domain)
     {
-        $anameRecords = $this->getDomainRecords($domain, DNS_A);
+        $domainAddresses = $this->getAddresses($domain);
 
-        if ($anameRecords !== null && count($anameRecords)) {
-            return array_search($this->targetHost, $anameRecords) !== false;
+        if (!count($domainAddresses)) {
+            return false;
         }
 
-        return (bool) array_intersect(
-            $this->getDomainRecords($domain, DNS_A),
-            $this->getDomainRecords($this->targetHost, DNS_A)
-        );
+        return count(array_intersect($domainAddresses, $this->getAddresses($this->targetHost))) > 0;
     }
 }
