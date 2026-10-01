@@ -16,6 +16,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Default for `root_site` in `config/ssl-manager.php` is `/var/www/your-app/current/public` instead of a Smart48 server path (apps set `SSL_ROOT_SITE` anyway)
 - The repository moved from `smart48/le-ssl-laravel-package` to `imagewize/ssl-manager` (GitHub redirects the old URL)
 
+## [Unreleased]
+
+### Fixed
+- `DnsService::hasProperRecord` compared the queried host name with the target host instead of A record addresses, so it failed for every correctly configured domain. It now compares the IPv4 addresses of the domain and the target (the target may be a host name or an IP address).
+
+### Changed
+- `UpdateCertificate` checks the A record again before requesting or renewing a certificate (the check was disabled as "temporary"). A domain that does not point at `target_aname` fails the job with a `LogicException`. Domains behind a proxy (e.g. Cloudflare) resolve to the proxy's addresses and fail the check.
+
 ## [v1.3.1] - 2026-09-30
 
 ### Added

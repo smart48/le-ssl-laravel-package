@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Imagewize\SslManager\Core\DnsService;
 use Imagewize\SslManager\Core\SslService;
+use LogicException;
 use Throwable;
 use Illuminate\Support\Facades\Notification;
 use Imagewize\SslManager\Notifications\FailedNotification;
@@ -49,17 +50,17 @@ class UpdateCertificate implements ShouldQueue
      */
     public function handle(SslService $sslService, DnsService $dnsService)
     {
-        // temporary disable this check
-        // if (!$dnsService->hasProperRecord($this->domain)) {
-        //     $this->fail(
-        //         new LogicException(sprintf(
-        //             'Domain "%s" must have proper A NAME record."',
-        //             $this->domain
-        //         ))
-        //     );
+        if (!$dnsService->hasProperRecord($this->domain)) {
+            $this->fail(
+                new LogicException(sprintf(
+                    'Domain "%s" must have a proper A record pointing at "%s".',
+                    $this->domain,
+                    config('ssl-manager.target_aname')
+                ))
+            );
 
-        //     return;
-        // }
+            return;
+        }
 
         $sslService->updateCertificate($this->domain, $this->renew);
     }
